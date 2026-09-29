@@ -10,7 +10,7 @@ This document records the non-negotiable principles, lessons, and boundaries gov
 Verifying that a model forward pass executes is an E0 milestone. Full Milestone 1 requires complete upstream preservation, compatibility adaptations, production backend, usable frontend, automated test suites, clean-clone reproducibility, and team git governance.
 
 ### Lesson 2 — Explicit Upstream Provenance
-Baseline commit `69ef0965a3fc3bf191804035b539720a06e58ba6` is preserved through an official GitHub fork. Downstream code is strictly segregated from upstream files.
+Baseline commit `69ef0965a3fc3bf191804035b539720a06e58ba6` is preserved through a GitHub fork of ostrokach/proteinsolver. Downstream code is strictly segregated from upstream files.
 
 ### Lesson 3 — Single-Target Fixture != Benchmark
 Recovery of 41.30% (38/92 residues) on `1n5uA03` is a single-target integration check. It must never be described as a general benchmark or benchmark recovery across folds.

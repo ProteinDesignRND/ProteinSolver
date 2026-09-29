@@ -115,7 +115,7 @@ export const App: React.FC = () => {
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: '20px 24px', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-        ProteinDesignRND — ProteinSolver Milestone 1 Official Upstream Reproduction Suite
+        ProteinDesignRND — ProteinSolver Milestone 1 Reproduction Suite
       </footer>
 
       {showProvenance && <ProvenanceModal onClose={() => setShowProvenance(false)} />}

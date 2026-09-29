@@ -1,5 +1,5 @@
 # ProteinSolver — Modern Runnable Reproduction & Full Application Suite
-**Official Upstream Reproduction, Isolated Compatibility Engine, FastAPI Backend, & React Frontend**
+**Upstream Reproduction, Isolated Compatibility Engine, FastAPI Backend, & React Frontend**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python: 3.11+](https://img.shields.io/badge/Python-3.11.9-brightgreen.svg)](https://python.org)
@@ -33,7 +33,7 @@
 **ProteinSolver** is a Graph Neural Network (GNN) for inverse protein design, originally created by Alexey Strokach, David Becerra, Carles Corbi-Verge, Albert Perez-Riba, and Philip M. Kim (*Cell Systems* 2020). It formulates inverse protein folding as a **Constraint Satisfaction Problem (CSP)** over residue spatial adjacency graphs ($r < 12.0$ Å), iteratively assigning amino acids that stabilize a target protein backbone.
 
 This implementation repository (`ProteinDesignRND/ProteinSolver`) fulfills **Milestone 1** of the ProteinDesign project:
-- An **official GitHub fork** of `ostrokach/proteinsolver`, preserving 100% of upstream git commit history.
+- A **GitHub fork of ostrokach/proteinsolver**, preserving 100% of upstream git commit history.
 - An **isolated cleanroom compatibility layer** (`compat/`) enabling seamless execution on Python 3.11, PyTorch 2.6, and PyG 2.8 without altering the frozen upstream package.
 - A **local mentor-ready FastAPI backend** (`apps/backend/`) exposing structured REST endpoints with strict JSON input validation.
 - A **modern React 19 + TypeScript + Vite frontend** (`apps/frontend/`) featuring interactive residue confidence heatmaps and FASTA export.
@@ -222,10 +222,12 @@ pytest tests/ -v
 
 ## Known Limitations & Scientific Boundaries
 
-1. **Single-Target Fixture Boundary:** Target `1n5uA03` is a single-target integration fixture. Its 41.30% recovery is an integration sanity check, NOT a general benchmark. Comprehensive scientific benchmarking belongs strictly to the separate research repository (`ProteinDesignRND/ProteinDesign`).
+1. **Single-Target Fixture Boundary:** Target `1n5uA03` is a single-target integration fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result, NOT a general benchmark. Training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Comprehensive scientific benchmarking belongs strictly to the separate research repository (`ProteinDesignRND/ProteinDesign`).
 2. **Display-Only Confidence Bands:** In the Web UI, residue tiles are color-coded based on model selection probability ($\ge 70\%$ green, $40-69\%$ amber, $< 40\%$ rose). These are visualization aids, not calibrated biological probabilities.
 3. **CPU Execution Default:** CSP iterative sequence design is executed on CPU (`device="cpu"`). PyTorch 2.6 introduced cross-device boolean indexing checks that trigger assertions in CUDA execution of the legacy code. CPU execution is fast (~1.5s) and stable without editing upstream code.
 4. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` depend on licensed installations of PyRosetta and Quark.
+5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and retained for reference; full training workflows are legacy.
+6. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 
 ---
 
@@ -248,13 +250,14 @@ ProteinSolver is licensed under the **MIT License**. See [LICENSE](LICENSE) for 
 
 ```bibtex
 @article{strokach2020fast,
-  title={Fast and flexible design of novel proteins with graph neural networks},
+  title={Fast and Flexible Protein Design Using Deep Graph Neural Networks},
   author={Strokach, Alexey and Becerra, David and Corbi-Verge, Carles and Perez-Riba, Albert and Kim, Philip M},
   journal={Cell Systems},
   volume={11},
   number={4},
   pages={402--411},
   year={2020},
-  publisher={Elsevier}
+  publisher={Elsevier},
+  doi={10.1016/j.cels.2020.08.016}
 }
 ```

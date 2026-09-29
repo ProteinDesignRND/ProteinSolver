@@ -2,6 +2,8 @@
 FastAPI application entrypoint for ProteinSolver backend.
 """
 
+import os
+import logging
 from contextlib import asynccontextmanager
 from typing import List
 from fastapi import FastAPI, HTTPException, status
@@ -21,6 +23,8 @@ from apps.backend.schemas import (
 )
 from apps.backend.service import ProteinSolverService
 
+logger = logging.getLogger("uvicorn.error")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,12 +39,15 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Enable CORS for local Vite frontend (localhost:5173 / localhost:3000)
+# Enable CORS for local Vite development origins (port 5173)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -89,8 +96,8 @@ def design_sequence(req: DesignRequest):
     """
     Execute real ProteinSolver inverse protein design.
     
-    GUARANTEE: Pure all-masked constraint satisfaction.
-    Zero native sequence labels are ever consumed or leaked.
+    Design-path input invariant enforced by the compatibility/application layer
+    and protected by regression tests.
     """
     service = ProteinSolverService.get_instance()
     try:
@@ -101,8 +108,14 @@ def design_sequence(req: DesignRequest):
             temperature=req.temperature,
             seed=req.seed,
         )
-    except Exception as e:
+    except (ValueError, FileNotFoundError) as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        logger.exception(f"Unexpected error in /api/design: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal error executing ProteinSolver design."
+        )
 
 
 @app.post("/api/diagnostic", response_model=DiagnosticResponse, tags=["Diagnostic"])
@@ -121,10 +134,18 @@ def evaluate_diagnostic(req: DiagnosticRequest):
             temperature=req.temperature,
             seed=req.seed,
         )
-    except Exception as e:
+    except (ValueError, FileNotFoundError) as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        logger.exception(f"Unexpected error in /api/diagnostic: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal error executing ProteinSolver diagnostic."
+        )
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("apps.backend.main:app", host=settings.host, port=settings.port, reload=True)
+    # Default reload to False for mentor/demo execution; allow PROTEINSOLVER_RELOAD=1 for dev
+    use_reload = os.environ.get("PROTEINSOLVER_RELOAD", "false").lower() in ("true", "1")
+    uvicorn.run("apps.backend.main:app", host=settings.host, port=settings.port, reload=use_reload)

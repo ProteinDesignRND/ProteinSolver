@@ -53,6 +53,27 @@ def test_api_validate_invalid():
     assert "error" in data
 
 def test_api_design(example_1n5u_pdb):
+    # Verify extra fields (e.g. native_sequence) are rejected by contract
+    res_extra = client.post(
+        "/api/design",
+        json={"pdb_content": example_1n5u_pdb, "native_sequence": "AAAA"},
+    )
+    assert res_extra.status_code == 422
+
+    # Verify unsupported strategy is rejected
+    res_strat = client.post(
+        "/api/design",
+        json={"pdb_content": example_1n5u_pdb, "strategy": "unsupported"},
+    )
+    assert res_strat.status_code == 422
+
+    # Verify non-positive temperature is rejected
+    res_temp = client.post(
+        "/api/design",
+        json={"pdb_content": example_1n5u_pdb, "temperature": 0.0},
+    )
+    assert res_temp.status_code == 422
+
     res = client.post(
         "/api/design",
         json={
@@ -71,6 +92,13 @@ def test_api_design(example_1n5u_pdb):
     assert 0.0 <= data["mean_confidence"] <= 1.0
 
 def test_api_diagnostic(example_1n5u_pdb):
+    # Verify extra fields are rejected
+    res_extra = client.post(
+        "/api/diagnostic",
+        json={"pdb_content": example_1n5u_pdb, "extra_field": "forbidden"},
+    )
+    assert res_extra.status_code == 422
+
     res = client.post(
         "/api/diagnostic",
         json={

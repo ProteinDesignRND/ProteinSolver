@@ -4,6 +4,7 @@ Service layer encapsulating ProteinSolver model singleton and operations.
 
 import sys
 import platform
+import hashlib
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import torch
@@ -38,6 +39,7 @@ class ProteinSolverService:
     def __init__(self):
         self.device = "cpu"  # CPU recommended for PyTorch 2.6 cross-device indexing compatibility
         self.model = None
+        self.checkpoint_sha256 = None
         self._load_model()
 
     @classmethod
@@ -51,8 +53,10 @@ class ProteinSolverService:
             ckpt_path = Path(settings.checkpoint_path)
             if not ckpt_path.exists():
                 raise FileNotFoundError(f"Checkpoint not found at: {ckpt_path}")
+            self.checkpoint_sha256 = hashlib.sha256(ckpt_path.read_bytes()).hexdigest().upper()
             self.model = load_proteinsolver_model(str(ckpt_path), device=self.device)
-            print(f"[Service] ProteinSolver model loaded on {self.device} (params: {EXPECTED_PARAMS:,})")
+            param_count = sum(p.numel() for p in self.model.parameters())
+            print(f"[Service] ProteinSolver model loaded on {self.device} (params: {param_count:,})")
         except Exception as e:
             print(f"[Service] WARNING: Failed to load model: {e}")
             self.model = None
@@ -71,17 +75,21 @@ class ProteinSolverService:
         )
 
     def get_model_info(self) -> ModelResponse:
+        model_loaded = self.model is not None
+        param_count = sum(p.numel() for p in self.model.parameters()) if model_loaded else 0
+        model_cls = self.model.__class__.__name__ if model_loaded else "ProteinNet"
+        hidden_sz = getattr(self.model, "hidden_size", 128) if model_loaded else 128
         return ModelResponse(
             model_name="ProteinSolver",
-            model_class="ProteinNet",
+            model_class=model_cls,
             architecture="4-block EdgeConv Residual GNN",
-            parameter_count=EXPECTED_PARAMS,
+            parameter_count=param_count if model_loaded else EXPECTED_PARAMS,
             input_node_features=21,
             input_edge_features=2,
-            hidden_size=128,
+            hidden_size=hidden_sz,
             output_size=20,
-            checkpoint_sha256=EXPECTED_SHA256,
-            checkpoint_loaded=self.model is not None,
+            checkpoint_sha256=self.checkpoint_sha256 or EXPECTED_SHA256,
+            checkpoint_loaded=model_loaded,
         )
 
     def validate_structure(self, pdb_content: str) -> ValidateStructureResponse:
@@ -104,7 +112,6 @@ class ProteinSolverService:
             return ValidateStructureResponse(valid=False, chains=[], error=str(e))
 
     def get_examples(self) -> List[ExampleStructure]:
-        examples_dir = Path(settings.inputs_dir)
         examples = [
             ExampleStructure(
                 id="1n5uA03",

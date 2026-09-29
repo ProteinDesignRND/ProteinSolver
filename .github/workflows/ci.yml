@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install torch==2.6.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
-          pip install torch-geometric==2.8.0.post1 torch-scatter==2.1.2+pt26cpu --extra-index-url https://data.pyg.org/whl/torch-2.6.0+cpu.html
-          pip install biopython fastapi uvicorn pydantic pytest httpx ruamel.yaml
+          pip install torch==2.6.0+cpu --index-url https://download.pytorch.org/whl/cpu
+          pip install torch-scatter==2.1.2+pt26cpu -f https://data.pyg.org/whl/torch-2.6.0+cpu.html
+          pip install $(grep -v -E '^(#|--|-f|torch==|torch-scatter==)' requirements.txt | tr -d '\r')
           pip install -e . --no-deps
 
       - name: Run pytest test suite
@@ -39,10 +39,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20"
 
       - name: Install dependencies and build
         run: |
           cd apps/frontend
-          npm install
+          npm ci
           npm run build

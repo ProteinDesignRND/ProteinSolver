@@ -2,8 +2,8 @@
 Pydantic schemas for request and response validation.
 """
 
-from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from typing import List, Optional, Dict, Any, Literal
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class HealthResponse(BaseModel):
@@ -38,7 +38,9 @@ class ChainInfo(BaseModel):
 
 
 class ValidateStructureRequest(BaseModel):
-    pdb_content: str = Field(..., description="PDB structure as text")
+    model_config = ConfigDict(extra="forbid")
+
+    pdb_content: str = Field(..., max_length=5_000_000, description="PDB structure as text (max 5 MB)")
 
 
 class ValidateStructureResponse(BaseModel):
@@ -57,10 +59,12 @@ class ExampleStructure(BaseModel):
 
 
 class DesignRequest(BaseModel):
-    pdb_content: str = Field(..., description="PDB file content as text")
+    model_config = ConfigDict(extra="forbid")
+
+    pdb_content: str = Field(..., max_length=5_000_000, description="PDB file content as text (max 5 MB)")
     chain_id: str = Field(default="A", description="Chain ID to design")
-    strategy: str = Field(default="map", description="Selection strategy: 'map' (greedy argmax) or 'multinomial'")
-    temperature: Optional[float] = Field(default=None, description="Sampling temperature (default 1.0 for map, 0.1 for multinomial)")
+    strategy: Literal["map", "multinomial"] = Field(default="map", description="Selection strategy: 'map' (greedy argmax) or 'multinomial'")
+    temperature: Optional[float] = Field(default=None, gt=0, description="Sampling temperature (must be > 0; default 1.0 for map, 0.1 for multinomial)")
     seed: Optional[int] = Field(default=None, description="Random seed for reproducibility")
 
 
@@ -78,10 +82,12 @@ class DesignResponse(BaseModel):
 
 
 class DiagnosticRequest(BaseModel):
-    pdb_content: str = Field(..., description="PDB file content as text")
+    model_config = ConfigDict(extra="forbid")
+
+    pdb_content: str = Field(..., max_length=5_000_000, description="PDB file content as text (max 5 MB)")
     chain_id: str = Field(default="A", description="Chain ID to evaluate")
-    strategy: str = Field(default="map", description="Selection strategy")
-    temperature: Optional[float] = Field(default=None, description="Sampling temperature")
+    strategy: Literal["map", "multinomial"] = Field(default="map", description="Selection strategy: 'map' or 'multinomial'")
+    temperature: Optional[float] = Field(default=None, gt=0, description="Sampling temperature (must be > 0)")
     seed: Optional[int] = Field(default=None, description="Random seed")
 
 

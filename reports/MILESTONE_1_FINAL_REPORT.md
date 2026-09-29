@@ -32,7 +32,7 @@ Following a thorough forensic audit, all prior factual, architectural, terminolo
 
 | Parameter | Value | Verification Evidence |
 | :--- | :--- | :--- |
-| **Upstream Repository** | `https://github.com/ostrokach/proteinsolver` | Official upstream baseline |
+| **Upstream Repository** | `https://github.com/ostrokach/proteinsolver` | Upstream baseline |
 | **Upstream Acquisition HEAD** | `69ef0965a3fc3bf191804035b539720a06e58ba6` | Verified via `git ls-remote upstream refs/heads/master` |
 | **Scientific Reference Commit** | `69ef0965a3fc3bf191804035b539720a06e58ba6` | Identical to acquisition HEAD; full upstream history preserved |
 | **Fork Creation Method** | GitHub Fork (`gh repo fork ostrokach/proteinsolver --org ProteinDesignRND`) | Complete Git commit history retained |
@@ -149,18 +149,18 @@ Empirical verification from the checkpoint tensors and model code confirms:
 
 ## 9. Genuine Isolated Clean-Clone Verification
 
-To satisfy Lesson 6, clean-clone validation was executed in a brand-new, isolated temporary directory (`ps_clean_clone_usg7p8ge`) using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
+To satisfy Lesson 6, clean-clone validation was executed in an isolated temporary directory using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
 
-1. Cloned feature branch `feature/milestone-1-full-implementation` (commit `5ee17c9`).
+1. Cloned feature branch `feature/milestone-1-full-implementation`.
 2. Verified cloned working tree clean.
 3. Created isolated virtual environment `.venv` using Python 3.11.9.
 4. Verified `sys.path` contained 0 references to `Protein Design` or any other project directory.
 5. Installed dependencies from pinned `requirements.txt`.
 6. Installed `ProteinSolver` in editable mode with `--no-deps`.
-7. In `apps/frontend/`, executed `npm ci` and `npm run build` (build completed in 316ms, 0 errors).
-8. Executed full test suite: **32 passed in 15.99s** (0 failed).
+7. In `apps/frontend/`, executed `npm ci` and `npm run build` (0 errors).
+8. Executed full test suite: **32 passed** (0 failed).
 9. Executed independent inference verification on `1n5uA03`:
-   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Elapsed=2.07s`.
+   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%`.
 10. Temporary directory cleaned up.
 
 ---
@@ -210,12 +210,14 @@ The scientific research repository `ProteinDesignRND/ProteinDesign` remains **10
 ## 13. Known Limitations
 
 As documented in `docs/KNOWN_LIMITATIONS.md`:
-1. **CPU Inference Default:** Iterative CSP sequence generation is standardized to CPU in the compatibility layer to prevent PyTorch 2.6 CUDA scalar indexing asserts.
-2. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
-3. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
-4. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
-5. **External Licensed Scoring Dependencies:** Upstream scoring scripts in `notebooks/16_david_analysis/` require external licensed installations of PyRosetta and Quark.
-6. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as legacy.
+1. **Single-Target Integration Check vs. Benchmark:** Target `1n5uA03` (92 AA) is an integration sanity fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result. It is NOT a generalized benchmark, published baseline, or proof of multi-target recovery across protein folds. Furthermore, training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Systematic benchmarking is reserved exclusively for the research repository (`ProteinDesignRND/ProteinDesign`).
+2. **CPU Inference Default:** Iterative CSP sequence generation is standardized to CPU in the compatibility layer to prevent PyTorch 2.6 CUDA scalar indexing asserts.
+3. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
+4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
+5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
+6. **External Licensed Scoring Dependencies:** Upstream scoring scripts in `notebooks/16_david_analysis/` require external licensed installations of PyRosetta and Quark.
+7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as legacy.
+8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 
 ---
 
@@ -239,8 +241,8 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 | **Model Facts** | Hidden dim = 128, parameters = 567,060 | **VERIFIED** (Empirical & checkpoint match) |
 | **Native Leak Invariant** | Mask token 20, y=None, design rejects native sequence | **VERIFIED** (Regression tested) |
 | **Result Language** | Single-target 41.30% integration result (not benchmark) | **VERIFIED** (Calibrated everywhere) |
-| **Test Suite** | Full suite passes without weakened assertions | **VERIFIED** (32/32 passed in 13.54s) |
-| **Frontend Build** | TypeScript compilation and Vite build pass | **VERIFIED** (Built in 127ms / 316ms) |
-| **Clean Clone** | Brand-new isolated environment with 0 cross-repo deps | **VERIFIED** (100% passed in `ps_clean_clone_usg7p8ge`) |
+| **Test Suite** | Full suite passes without weakened assertions | **VERIFIED** (32/32 passed) |
+| **Frontend Build** | TypeScript compilation and Vite build pass | **VERIFIED** (0 errors) |
+| **Clean Clone** | Brand-new isolated environment with 0 cross-repo deps | **VERIFIED** (100% passed in isolated clean clone) |
 | **Research Firewall** | `ProteinDesign` research repository untouched | **VERIFIED** (100% clean) |
 | **Governance** | PR #1 open, human review required | **VERIFIED** (`PENDING_HUMAN_MERGE`) |

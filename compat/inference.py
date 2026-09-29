@@ -51,9 +51,11 @@ def design_protein_sequence(
     """
     Design an amino acid sequence from contact graph using ProteinSolver CSP.
     
-    CRITICAL SECURITY & METHODOLOGICAL INVARIANT:
+    METHODOLOGICAL INVARIANT:
     All residues are initialized strictly to mask token (20).
-    data.y is explicitly stripped. Zero native sequence labels can leak into the design.
+    data.y is explicitly stripped.
+    Design-path input invariant enforced by the compatibility/application layer
+    and protected by regression tests.
     """
     if temperature is None:
         temperature = 1.0 if strategy == "map" else 0.1
