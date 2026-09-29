@@ -65,14 +65,26 @@ Passing `npm run build` and backend API integration tests proves build and API f
 ### Lesson 16 — Bounded AI Artifact & Context Scope
 Avoid unbounded context growth. Rely on the repository itself as the source of truth, verify against active files, and avoid dumping scratch paths or machine-specific logs into persistent documentation.
 
-### Lesson 17 (Proposed) — Cross-Repository Evidence Transfer
+### Lesson 17 — Cross-Repository Evidence Transfer
 Historical evidence may be copied into another project only after explicit source/destination classification. Source research records are not deleted during transfer. Existing destination authoritative documents must not be overwritten. Transfers must record source paths, hashes where practical, transformations, and destination paths. Cross-repository reads must strictly respect the Hard Working-Directory Safety Rule (explicit paths / `git -C`, zero working directory changes).
 
-### Lesson 18 (Proposed) — Current-State Documentation Must Be Bound to Actual Repository State
+### Lesson 18 — Current-State Documentation Must Be Bound to Actual Repository State
 Current-state documents must derive branch, HEAD, PR, CI, test and deployment claims from the repository/GitHub state at the time of writing. Historical reports must remain explicitly historical and must not be presented as current.
 
-### Lesson 19 (Proposed) — Copy-Type Terminology Must Match Cryptographic Evidence
+### Lesson 19 — Copy-Type Terminology Must Match Cryptographic Evidence
 A file altered by line-ending, whitespace, metadata, path or content transformation must not be labelled an exact byte-for-byte copy. Preserve source/destination hashes and record transformations accurately (e.g. "Content copy with line-ending normalization"). Reserve "Exact byte-for-byte copy" strictly for files with matching cryptographic hashes.
 
-### Lesson 20 (Proposed) — Verification Evidence Is Commit-Bound
+### Lesson 20 — Verification Evidence Is Commit-Bound
 Tests, clean-clone runs, CI results and runtime measurements must be tied to the exact repository commit/HEAD on which they were observed. Later documentation must not silently present earlier evidence as evidence for a newer commit; when code has not changed between commits, the preservation of executable state must be explicitly proven rather than assumed.
+
+### Lesson 21 — Verification-Basis Commit vs. Report Containing Commit
+Current-state evidence must reference the exact commit whose executable state was verified (`VERIFICATION_BASIS_COMMIT`). A report must not claim its own containing commit as its verification basis because that creates an impossible self-referential SHA. Documentation-only descendants must preserve the evidence applicability chain explicitly.
+
+### Lesson 22 — CI Warning Status Semantics
+"Documented" is not the same as "remediated"; current CI status must be stated at run granularity. Do not claim warnings are resolved unless the underlying action/runner configuration was actually upgraded and verified in live CI.
+
+### Lesson 23 — Canonical Limitation Source
+`docs/KNOWN_LIMITATIONS.md` is the authoritative limitation source containing the exact 9 bounded concepts. Active documents must either mirror the canonical limitation set or explicitly identify themselves as condensed summaries.
+
+### Lesson 24 — Historical Evidence Immutability
+Historical reports remain historical evidence; active truth is updated in current documents without rewriting or falsifying the historical audit trail.

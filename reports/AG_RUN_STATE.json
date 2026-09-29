@@ -1,11 +1,11 @@
 {
   "state": "MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS",
   "governance_state": "PENDING_HUMAN_MERGE",
-  "current_stage": "PENDING_HUMAN_MERGE",
+  "current_stage": "STAGE_7_GOVERNANCE_CLOSURE",
   "progress_percentage": 100,
   "milestone": "Milestone 1 — Upstream Reproduction, Compatibility Layer & Application Suite",
-  "active_work": "Final truth, reproducibility, and release-gate closure complete; awaiting human code review and merge of PR #1",
-  "next_action": "Human review and merge of PR #1 on GitHub",
+  "active_work": "Final release-gate audit and CI hardening complete; awaiting human code review and merge of PR #1",
+  "next_action": "Human review and approve PR #1 on GitHub, then squash-merge into main",
   "blockers": [],
   "tests_passed": 32,
   "tests_failed": 0,
@@ -15,7 +15,7 @@
   "pull_request_url": "https://github.com/ProteinDesignRND/ProteinSolver/pull/1",
   "pull_request_state": "OPEN",
   "feature_branch": "feature/milestone-1-full-implementation",
-  "commit_sha": "aea80858099d9e75df6a347b2e700302398906b1",
+  "verification_basis_commit": "c9a8d412dd788fbcff39da11abb9fe79e9dd34d5",
   "main_sha": "69ef0965a3fc3bf191804035b539720a06e58ba6",
   "model_facts": {
     "model_name": "ProteinSolver",

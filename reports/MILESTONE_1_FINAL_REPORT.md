@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `aea80858099d9e75df6a347b2e700302398906b1`
+**Verification Basis Commit:** `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` (verified clean clone, 32/32 tests, npm build, real inference)
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -166,7 +166,7 @@ Consequently, a fresh, true remote clean-clone verification was executed from sc
    `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.82s`.
 9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
 
-**Commit-Bound Applicability Statement:** Clean-clone evidence was directly verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s; subsequent changes (including `8fa8a22`, `fcb7f3f`, `5334b09`, and `aea8085`) are documentation-only, preserving executable reproducibility evidence applicability.
+**Commit-Bound Applicability Statement:** Clean-clone evidence was directly verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s; subsequent changes are documentation, progress records, and CI runner maintenance, preserving executable reproducibility evidence applicability.
 
 ---
 
@@ -221,9 +221,9 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
 5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
 6. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models. These workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
-7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
-8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
-9. **CI Forward-Maintenance Notes:** GitHub Actions runners emit advisory deprecation notices for Node.js 20 actions (automatically executed under Node 24 by the runner) and scheduled Ubuntu 26 runner image migrations. These warnings are advisory and non-blocking for Milestone 1; active workflows succeed 100% in CI.
+7. **External Training Dataset Shard Dependency:** Full training datasets (externally hosted training shards) are documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards.
+8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI (`BROWSER_E2E_NOT_AUTOMATED`).
+9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation and Ubuntu runner image migration notices are remediated on the pinned runner configuration; current CI run succeeds in 2/2 jobs.
 
 ---
 
