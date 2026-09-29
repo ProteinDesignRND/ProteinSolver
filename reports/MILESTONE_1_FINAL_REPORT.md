@@ -74,21 +74,21 @@ The upstream project inventory was audited across all 22 meaningful capabilities
 | 5 | Sudoku Datasets & Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests pass) |
 | 6 | N-Queens Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/nqueens.py` |
 | 7 | Graph-Labeling Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/graph_labeling.py` |
-| 8 | Protein Design Iterative CSP | `PRESERVED_UNCHANGED` | `proteinsolver.utils.protein_design.design_sequence` wrapped by `compat/inference.py` |
+| 8 | Protein Design Iterative CSP | `COMPATIBILITY_ADAPTED` | Upstream algorithm source preserved intact in `proteinsolver/utils/protein_design.py`; modern application execution is compatibility-adapted via `compat/inference.py` on CPU |
 | 9 | Protein Demo Workflow | `APPLICATION_WRAPPED` | Modernized into interactive FastAPI + React application (`apps/backend/` + `apps/frontend/`) |
 | 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
 | 11 | Sudoku Demo Workflow | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
 | 12 | Sudoku Analysis Workflow | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
 | 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full GNN training pipelines preserved in `notebooks/04_protein_train*.ipynb`; documented in `docs/KNOWN_LIMITATIONS.md` |
 | 14 | Model Selection Workflows | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
-| 15 | Model Scoring Utilities | `CLI/NOTEBOOK_RETAINED` | Legacy scoring wrappers in `proteinsolver/utils/` (requires external PyRosetta / Modeller) |
+| 15 | Model Scoring Utilities | `EXTERNAL_DEPENDENCY` | Upstream scoring wrappers in `proteinsolver/utils/model_scoring/` preserved intact (require external standalone Rosetta / Modeller) |
 | 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | 2.28 MB state-dict (`data/e53-s1952148-d93703104.state`), SHA-256 verified, key mapping in `compat/checkpoint.py` |
 | 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Multi-gigabyte external datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
 | 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
 | 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Binder environment retained for provenance |
 | 20 | Original Unit Tests | `FUNCTIONALLY_VERIFIED` | All compatible upstream unit tests pass cleanly in test suite |
 | 21 | C & Shell Utilities | `PRESERVED_UNCHANGED` | Standalone C Sudoku generator (`scripts/sugen.c`) and shell helpers preserved |
-| 22 | Legacy CI Configuration | `PRESERVED_UNCHANGED` | Upstream `.gitlab-ci.yml` preserved; modern CI active via GitHub Actions (`.github/workflows/ci.yml`) |
+| 22 | Legacy CI Configuration | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Upstream `.gitlab-ci.yml` preserved for provenance; modern operational CI active via GitHub Actions (`.github/workflows/ci.yml`) |
 
 ---
 
@@ -107,7 +107,7 @@ The compatibility layer (`compat/`) resolves exactly **7** distinct historical i
 5. **Checkpoint State-Dict Layer Key Mapping (`compat/checkpoint.py`):**
    The published checkpoint (`e53-s1952148-d93703104.state`) uses training-time keys (`graph_conv_0.`) whereas packaged `ProteinNet` defines `graph_conv_1.`. The loader deterministically maps keys and validates that all 567,060 parameters load with 0 missing and 0 unexpected keys.
 6. **PyTorch 2.6 Cross-Device Indexing Standardization (`compat/inference.py`):**
-   Iterative CSP sequence design performs sequential scalar index assignments (`data.x[best_idx] = best_val`). Under PyTorch 2.6 on CUDA, scalar cross-device indexing triggers asynchronous device-side assert errors. The compatibility inference engine standardizes design execution to CPU.
+   Iterative CSP sequence design performs sequential scalar index assignments (`data.x[best_idx] = best_val`). Under the verified PyTorch 2.6 environment on CUDA, scalar cross-device indexing triggered asynchronous device-side assert errors. The compatibility inference engine therefore standardizes design execution to CPU.
 7. **`ruamel.yaml` 0.18+ API Migration (`compat/shims.py`):**
    Replaced deprecated `ruamel.yaml.safe_load(...)` with `YAML(typ='safe', pure=True).load`.
 
@@ -166,7 +166,7 @@ Consequently, a fresh, true remote clean-clone verification was executed from sc
    `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.82s`.
 9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
 
-**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s. Any subsequent micro-closure changes are strictly documentation consistency updates with zero changes to executable, runtime, test, package, model, or CI files.
+**Commit-Bound Applicability Statement:** Clean-clone evidence was directly verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s; subsequent changes are documentation-only.
 
 ---
 
@@ -186,7 +186,7 @@ The automated test suite contains **32 tests** across 10 test modules:
 | `tests/test_leak_regression.py` | 2 | Design-path zero-leakage invariant, reference sequence immunity | **PASSED** |
 | `tests/test_backend_api.py` | 8 | Health, exact model metadata, examples, validation, design, diagnostic | **PASSED** |
 | `tests/test_integration_1n5u.py` | 1 | Single-target all-masked integration reproduction (41.30% recovery) | **PASSED** |
-| **Total** | **32** | **Full automated coverage** | **32 PASSED (0 failed)** |
+| **Total** | **32** | **Automated verification across 10 modules** | **32 PASSED (0 failed)** |
 
 ---
 
@@ -197,7 +197,7 @@ The automated test suite contains **32 tests** across 10 test modules:
 - **Confidence Visualization:** Confidence bands in the UI (High $\ge$ 70%, Moderate 40–69%, Low < 40%) are documented strictly as **display-only visualization bands** representing uncalibrated model selection probabilities.
 - **Browser Automation Classification:**
   - `FRONTEND_BUILD_VERIFIED`: Built via Vite with 0 TypeScript/bundling errors.
-  - `BACKEND_INTEGRATION_VERIFIED`: All 8 REST endpoints verified via FastAPI TestClient.
+  - `BACKEND_INTEGRATION_VERIFIED`: All 7 REST endpoints verified across 8 backend API tests via FastAPI TestClient.
   - `BROWSER_E2E_NOT_AUTOMATED`: Automated headless browser binaries are not installed in the local environment; interactive browser execution is performed via manual mentor demo workflow.
 
 ---
@@ -220,7 +220,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 3. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
 5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
-6. **External Licensed Scoring Dependencies:** Upstream scoring scripts in `notebooks/16_david_analysis/` require external licensed installations of PyRosetta and Quark.
+6. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models.
 7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as legacy.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 

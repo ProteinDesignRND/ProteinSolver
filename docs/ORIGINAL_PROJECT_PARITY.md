@@ -28,21 +28,21 @@ This document provides a forensic classification of every major component, scrip
 | **5** | **Sudoku Datasets & Utilities** | `proteinsolver/datasets/sudoku*.py` | `PRESERVED_UNCHANGED` & `FUNCTIONALLY_VERIFIED` | Sudoku string-to-tensor parsing and puzzle validity checking. 8/8 parameterizations pass in `tests/utils/test_sudoku.py`. |
 | **6** | **N-Queens Dataset Stub** | `proteinsolver/datasets/nqueens.py` | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class (`class NQueensDataset(Dataset): ...`). Preserved intact. |
 | **7** | **Graph Labeling Dataset Stub** | `proteinsolver/datasets/graph_labeling.py` | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class. Preserved intact. |
-| **8** | **Protein Design Algorithm (CSP)** | `proteinsolver/utils/protein_design.py` | `PRESERVED_UNCHANGED` & `APPLICATION_WRAPPED` | Iterative constraint satisfaction inverse folding engine (`design_sequence`). Wrapped by `compat/inference.py` on CPU to prevent PyTorch 2.6 cross-device indexing assertions. |
+| **8** | **Protein Design Algorithm (CSP)** | `proteinsolver/utils/protein_design.py` | `COMPATIBILITY_ADAPTED` | Core iterative constraint satisfaction inverse folding engine (`design_sequence`) source preserved intact; wrapped by `compat/inference.py` on CPU to prevent PyTorch 2.6 cross-device indexing assertions. |
 | **9** | **Protein Demo Workflow** | `notebooks/20_protein_demo.ipynb` | `APPLICATION_WRAPPED` | Original Jupyter demonstration adapted into modern interactive React web application (`apps/frontend/`) backed by FastAPI REST API (`apps/backend/`). |
 | **10** | **Protein Analysis Workflow** | `notebooks/06_protein_analysis.ipynb` | `CLI/NOTEBOOK_RETAINED` | Jupyter analysis evaluating log-probabilities and mutations. Preserved in `notebooks/`. |
 | **11** | **Sudoku Demo Workflow** | `notebooks/20_sudoku_demo.ipynb` | `CLI/NOTEBOOK_RETAINED` | Requires external trained Sudoku neural network checkpoint (`sudoku_train/c8de7e56/*.state`). Data generation and verification utilities are executable locally; model checkpoint is an external dependency. |
 | **12** | **Sudoku Analysis Workflow** | `notebooks/06_sudoku_analysis.ipynb` | `CLI/NOTEBOOK_RETAINED` | Research analysis of Sudoku difficulty vs. graph connectivity. Preserved in `notebooks/`. |
 | **13** | **Training Workflows** | `notebooks/04_protein_train.ipynb`, `04_sudoku_train*.ipynb` | `CLI/NOTEBOOK_RETAINED` | Full GNN training pipelines with Adam optimizer and cosine annealing. Retained as reference research workflows. |
 | **14** | **Model Selection Workflows** | `notebooks/05_select_best_model.ipynb` | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking. Preserved in `notebooks/`. |
-| **15** | **Model Scoring Utilities** | `proteinsolver/utils/modeller_score.py` | `CLI/NOTEBOOK_RETAINED` | Scoring utilities using Modeller and Rosetta. Retained in package. |
+| **15** | **Model Scoring Utilities** | `proteinsolver/utils/model_scoring/` | `EXTERNAL_DEPENDENCY` | Scoring utilities in `proteinsolver/utils/model_scoring/` preserved intact; require external installations of standalone Rosetta binaries and/or Modeller. |
 | **16** | **Pretrained Protein Checkpoint** | `data/e53-s1952148-d93703104.state` | `FUNCTIONALLY_VERIFIED` | 2.27 MB state-dict, SHA-256 `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`. Deterministically mapped and loaded with 0 missing/unexpected keys. |
 | **17** | **External Training Datasets** | `http://deep-protein-gen.data.proteinsolver.org/` | `EXTERNAL_DEPENDENCY` | Multi-gigabyte pre-generated training datasets and graph shards. Retained as documented external download workflows. |
 | **18** | **Docker Support** | `binder/Dockerfile`, `.ci/docker/Dockerfile` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles targeting Python 3.7. Preserved for provenance; modern execution handled via native Python 3.11 / uv. |
 | **19** | **Binder Support** | `binder/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Interactive Binder environment for legacy 2020 paper demonstration. |
 | **20** | **Original Tests** | `tests/nn/test_functional.py`, `tests/utils/test_sudoku.py` | `FUNCTIONALLY_VERIFIED` | Upstream tests execute and pass cleanly under modern PyG/ruamel compatibility shims. |
 | **21** | **C & Shell Utilities** | `scripts/sugen.c`, `scripts/run_notebook_*.sh` | `PRESERVED_UNCHANGED` | Standalone C Sudoku generator (`sugen.c`) and shell helpers. |
-| **22** | **Legacy CI & Config** | `.gitlab-ci.yml`, `setup.cfg` | `PRESERVED_UNCHANGED` | Preserved upstream repository metadata; supplemented by modern GitHub Actions CI (`.github/workflows/ci.yml`). |
+| **22** | **Legacy CI & Config** | `.gitlab-ci.yml`, `.ci/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Upstream GitLab CI configuration preserved for provenance; modern operational CI is handled by GitHub Actions (`.github/workflows/ci.yml`). |
 
 ---
 
