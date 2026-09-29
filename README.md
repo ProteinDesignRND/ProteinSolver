@@ -37,7 +37,7 @@ This implementation repository (`ProteinDesignRND/ProteinSolver`) fulfills **Mil
 - An **isolated cleanroom compatibility layer** (`compat/`) enabling seamless execution on Python 3.11, PyTorch 2.6, and PyG 2.8 without altering the frozen upstream package.
 - A **local mentor-ready FastAPI backend** (`apps/backend/`) exposing structured REST endpoints with strict JSON input validation.
 - A **modern React 19 + TypeScript + Vite frontend** (`apps/frontend/`) featuring interactive residue confidence heatmaps and FASTA export.
-- **Enforced design-path invariant and regression-tested zero native leakage**, guaranteeing that inverse folding design operates on purely all-masked inputs ($data.x = 20$, $data.y = None$).
+- **Design-path input invariant enforced by the compatibility/application layer and protected by regression tests**, ensuring that inverse folding design operates on purely all-masked inputs ($data.x = 20$, $data.y = None$).
 
 ---
 

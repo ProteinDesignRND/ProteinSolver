@@ -1,14 +1,14 @@
 # ProteinSolver Milestone 1 — Forensic Audit, Correction & Final Verification Report
 
-**Status Classification:** `MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS`  
-**Governance State:** `PENDING_HUMAN_MERGE`  
-**Date:** September 29, 2026  
-**Environment:** Windows 11, Antigravity IDE, Python 3.11.9, PyTorch 2.6.0+cu124, PyG 2.8.0.post1, Node v24.18.0, npm 11.16.0  
-**Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (Local: `D:\Projects\ProteinSolver`)  
-**Research Repository (Firewalled):** `ProteinDesignRND/ProteinDesign` (Local: `D:\Projects\Protein Design`)  
-**Feature Branch:** `feature/milestone-1-full-implementation`  
-**Current HEAD SHA:** `5ee17c9b0e14a1a67ad45e6eb4e8c56be0e6538b`  
-**Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)  
+**Status Classification:** `MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS`
+**Governance State:** `PENDING_HUMAN_MERGE`
+**Date:** September 29, 2026
+**Environment:** Windows 11, Antigravity IDE, Python 3.11.9, PyTorch 2.6.0+cu124, PyG 2.8.0.post1, Node v24.18.0, npm 11.16.0
+**Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (Local: `D:\Projects\ProteinSolver`)
+**Research Repository (Firewalled):** `ProteinDesignRND/ProteinDesign` (Local: `D:\Projects\Protein Design`)
+**Feature Branch:** `feature/milestone-1-full-implementation`
+**Current HEAD SHA:** `0b5cbb949c5c8ff359b4e0b4fa736533dc7dd972`
+**Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
 ---
 
@@ -94,19 +94,19 @@ The upstream project inventory was audited across all 22 meaningful capabilities
 
 The compatibility layer (`compat/`) resolves exactly **7** distinct historical incompatibilities without modifying the upstream scientific package:
 
-1. **Windows POSIX `fcntl` stub (`compat/shims.py`):**  
+1. **Windows POSIX `fcntl` stub (`compat/shims.py`):**
    POSIX file locking is absent on Windows. Shims create a dummy `fcntl` module with standard constants (`LOCK_EX`, `LOCK_SH`, `LOCK_UN`, `LOCK_NB`). To prevent silent race conditions, `fcntl.flock` and `fcntl.lockf` explicitly raise `NotImplementedError` rather than pretending locking succeeded.
-2. **Cleanroom BioPython Structure Parser (`compat/structure.py`):**  
+2. **Cleanroom BioPython Structure Parser (`compat/structure.py`):**
    The legacy `kmbio` / `kmtools` dependencies are abandoned. A modern BioPython-based parser computes heavy-atom inter-residue distance matrices ($r < 12.0$ Å), extracts coordinates, builds PyG edge indices, and determines edge attributes.
-3. **PyTorch Geometric 2.x `scatter_` In-Place Shim (`compat/shims.py`):**  
+3. **PyTorch Geometric 2.x `scatter_` In-Place Shim (`compat/shims.py`):**
    The in-place `torch_geometric.utils.scatter_` operator was removed in PyG 2.x. A shim intercepts calls and delegates to `torch_scatter.scatter(src, index, dim=dim, out=out, reduce=reduce)`.
-4. **PyG Data & Batch Collation Adaptation (`compat/inference.py`):**  
+4. **PyG Data & Batch Collation Adaptation (`compat/inference.py`):**
    Modern PyG 2.8 `Batch.from_data_list` requires uniform tensor keys and handles slicing differently from PyG 1.x. The adapter ensures homogeneous tensor dictionaries prior to collation.
-5. **Checkpoint State-Dict Layer Key Mapping (`compat/checkpoint.py`):**  
+5. **Checkpoint State-Dict Layer Key Mapping (`compat/checkpoint.py`):**
    The published checkpoint (`e53-s1952148-d93703104.state`) uses training-time keys (`graph_conv_0.`) whereas packaged `ProteinNet` defines `graph_conv_1.`. The loader deterministically maps keys and validates that all 567,060 parameters load with 0 missing and 0 unexpected keys.
-6. **PyTorch 2.6 Cross-Device Indexing Standardization (`compat/inference.py`):**  
+6. **PyTorch 2.6 Cross-Device Indexing Standardization (`compat/inference.py`):**
    Iterative CSP sequence design performs sequential scalar index assignments (`data.x[best_idx] = best_val`). Under PyTorch 2.6 on CUDA, scalar cross-device indexing triggers asynchronous device-side assert errors. The compatibility inference engine standardizes design execution to CPU.
-7. **`ruamel.yaml` 0.18+ API Migration (`compat/shims.py`):**  
+7. **`ruamel.yaml` 0.18+ API Migration (`compat/shims.py`):**
    Replaced deprecated `ruamel.yaml.safe_load(...)` with `YAML(typ='safe', pure=True).load`.
 
 ---
@@ -143,7 +143,7 @@ Empirical verification from the checkpoint tensors and model code confirms:
 - **Execution Mode:** All-masked MAP greedy inverse folding on CPU.
 - **Result:** **38 / 92 residues** match the native sequence (**41.30% native sequence identity**).
 - **Runtime:** ~1.52 seconds.
-- **Characterization:** This is a *previously validated single-target all-masked integration result* confirming algorithmic correctness of the local reproduction. It is NOT claimed to be a generalized benchmark or published MAP baseline across folds.
+- **Characterization:** This is a *previously validated single-target all-masked integration result* (38/92 = 41.30% native sequence identity). It is NOT claimed to be a generalized benchmark, published baseline, or proof of fold-wide recovery.
 
 ---
 
@@ -167,7 +167,7 @@ To satisfy Lesson 6, clean-clone validation was executed in a brand-new, isolate
 
 ## 10. Automated Test Suite Summary
 
-The automated test suite contains **32 tests** across 8 test modules:
+The automated test suite contains **32 tests** across 10 test modules:
 
 | Test Module | Tests | Focus Area | Status |
 | :--- | :--- | :--- | :--- |
@@ -211,9 +211,11 @@ The scientific research repository `ProteinDesignRND/ProteinDesign` remains **10
 
 As documented in `docs/KNOWN_LIMITATIONS.md`:
 1. **CPU Inference Default:** Iterative CSP sequence generation is standardized to CPU in the compatibility layer to prevent PyTorch 2.6 CUDA scalar indexing asserts.
-2. **POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError`.
-3. **Legacy RCSB/PDB Fetcher Retired:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
-4. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model probabilities and should not be used as biological thresholds.
+2. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
+3. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
+4. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
+5. **External Licensed Scoring Dependencies:** Upstream scoring scripts in `notebooks/16_david_analysis/` require external licensed installations of PyRosetta and Quark.
+6. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as legacy.
 
 ---
 
