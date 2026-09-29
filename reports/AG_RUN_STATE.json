@@ -15,7 +15,7 @@
   "pull_request_url": "https://github.com/ProteinDesignRND/ProteinSolver/pull/1",
   "pull_request_state": "OPEN",
   "feature_branch": "feature/milestone-1-full-implementation",
-  "commit_sha": "5334b09b785ca1d172b15636ce8ab8b3d319473b",
+  "commit_sha": "aea80858099d9e75df6a347b2e700302398906b1",
   "main_sha": "69ef0965a3fc3bf191804035b539720a06e58ba6",
   "model_facts": {
     "model_name": "ProteinSolver",

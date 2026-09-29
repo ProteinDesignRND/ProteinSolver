@@ -243,6 +243,7 @@ pytest tests/ -v
 4. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` depend on external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK ab initio structural models. These scoring workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
 6. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
+7. **CI Forward-Maintenance Notes:** GitHub Actions runners emit advisory deprecation notices for Node.js 20 actions (automatically executed under Node 24 by the runner) and scheduled Ubuntu 26 runner image migrations. These warnings are advisory and non-blocking for Milestone 1; active workflows succeed 100% in CI.
 
 ---
 
