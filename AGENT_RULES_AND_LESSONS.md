@@ -64,3 +64,6 @@ Passing `npm run build` and backend API integration tests proves build and API f
 
 ### Lesson 16 — Bounded AI Artifact & Context Scope
 Avoid unbounded context growth. Rely on the repository itself as the source of truth, verify against active files, and avoid dumping scratch paths or machine-specific logs into persistent documentation.
+
+### Lesson 17 (Proposed) — Cross-Repository Evidence Transfer
+Historical evidence may be copied into another project only after explicit source/destination classification. Source research records are not deleted during transfer. Existing destination authoritative documents must not be overwritten. Transfers must record source paths, hashes where practical, transformations, and destination paths. Cross-repository reads must strictly respect the Hard Working-Directory Safety Rule (explicit paths / `git -C`, zero working directory changes).
