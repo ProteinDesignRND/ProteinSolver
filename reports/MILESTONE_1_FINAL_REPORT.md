@@ -3,12 +3,14 @@
 **Status Classification:** `MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS`
 **Governance State:** `PENDING_HUMAN_MERGE`
 **Date:** September 29, 2026
-**Environment:** Windows 11, Antigravity IDE, Python 3.11.9, PyTorch 2.6.0+cu124, PyG 2.8.0.post1, Node v24.18.0, npm 11.16.0
-**Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (Local: `D:\Projects\ProteinSolver`)
-**Research Repository (Firewalled):** `ProteinDesignRND/ProteinDesign` (Local: `D:\Projects\Protein Design`)
+**Environment:** Windows 11, Python 3.11.9, PyTorch 2.6.0+cu124, PyG 2.8.0.post1, Node v24.18.0, npm 11.16.0
+**Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
+**Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current HEAD SHA:** `0b5cbb949c5c8ff359b4e0b4fa736533dc7dd972`
+**Current Pushed Branch HEAD:** `e10411a0760300c130bbc45b55169ded91ed9940`
+**Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
+
 
 ---
 
@@ -65,28 +67,28 @@ The upstream project inventory was audited across all 22 meaningful capabilities
 
 | # | Upstream Component | Classification | Current Disposition |
 | :--- | :--- | :--- | :--- |
-| 1 | `ProteinNet` Core GNN Model | `PRESERVED_UNCHANGED` | Packaged in `proteinsolver/models/proteinnet.py`, wrapped by `compat/checkpoint.py` |
+| 1 | `ProteinNet` Core GNN Model | `PRESERVED_UNCHANGED` | Packaged in `proteinsolver/models/proteinnet.py`, wrapped by `compat/checkpoint.py` (567,060 params, hidden dim 128) |
 | 2 | EdgeConv GNN Modules | `PRESERVED_UNCHANGED` | `proteinsolver/nn/` EdgeConv modules executed natively |
 | 3 | Functional/Activation Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/nn/test_functional.py` |
-| 4 | Protein Datasets & Transforms | `PRESERVED_UNCHANGED` | `proteinsolver/datasets/protein.py` preserved |
-| 5 | Sudoku Datasets & Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests) |
-| 6 | N-Queens Dataset & Utilities | `CLI/NOTEBOOK_RETAINED` | Retained in `proteinsolver/datasets/` for research exploration |
-| 7 | Graph-Labeling Utilities | `CLI/NOTEBOOK_RETAINED` | Retained in `proteinsolver/datasets/` |
+| 4 | Protein Datasets & Transforms | `PRESERVED_UNCHANGED` | `proteinsolver/datasets/protein.py` preserved and active |
+| 5 | Sudoku Datasets & Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests pass) |
+| 6 | N-Queens Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/nqueens.py` |
+| 7 | Graph-Labeling Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/graph_labeling.py` |
 | 8 | Protein Design Iterative CSP | `PRESERVED_UNCHANGED` | `proteinsolver.utils.protein_design.design_sequence` wrapped by `compat/inference.py` |
-| 9 | Protein Demo Notebook | `APPLICATION_WRAPPED` | Modernized into interactive FastAPI + React application |
-| 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Retained for reference |
-| 11 | Sudoku Demo | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
-| 12 | Sudoku Analysis | `CLI/NOTEBOOK_RETAINED` | Retained for reference |
-| 13 | Training Workflows | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Documented in `docs/KNOWN_LIMITATIONS.md`; modern PyTorch DDP recommended |
-| 14 | Validation Workflows | `APPLICATION_WRAPPED` | Single-target diagnostic evaluation integrated in application |
-| 15 | Model Scoring Utilities | `PRESERVED_UNCHANGED` | Retained in `proteinsolver/utils/` |
-| 16 | Pretrained Checkpoint Workflow | `COMPATIBILITY_ADAPTED` | Layer key adaptation in `compat/checkpoint.py` |
-| 17 | External Training Dataset Workflow | `EXTERNAL_DEPENDENCY` | Requires multi-GB external data; documented |
-| 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Dockerfile retained; local venv standardized |
-| 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy binder files retained |
-| 20 | Original Unit Tests | `PRESERVED_UNCHANGED` | All 11 compatible upstream tests pass in test suite |
-| 21 | Scripts / C Utilities | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Historical C helper files preserved in repo |
-| 22 | Legacy CI Configuration | `COMPATIBILITY_ADAPTED` | GitLab CI superseded by GitHub Actions (`.github/workflows/ci.yml`) |
+| 9 | Protein Demo Workflow | `APPLICATION_WRAPPED` | Modernized into interactive FastAPI + React application (`apps/backend/` + `apps/frontend/`) |
+| 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
+| 11 | Sudoku Demo Workflow | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
+| 12 | Sudoku Analysis Workflow | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
+| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full GNN training pipelines preserved in `notebooks/04_protein_train*.ipynb`; documented in `docs/KNOWN_LIMITATIONS.md` |
+| 14 | Model Selection Workflows | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
+| 15 | Model Scoring Utilities | `CLI/NOTEBOOK_RETAINED` | Legacy scoring wrappers in `proteinsolver/utils/` (requires external PyRosetta / Modeller) |
+| 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | 2.28 MB state-dict (`data/e53-s1952148-d93703104.state`), SHA-256 verified, key mapping in `compat/checkpoint.py` |
+| 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Multi-gigabyte external datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
+| 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
+| 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Binder environment retained for provenance |
+| 20 | Original Unit Tests | `FUNCTIONALLY_VERIFIED` | All compatible upstream unit tests pass cleanly in test suite |
+| 21 | C & Shell Utilities | `PRESERVED_UNCHANGED` | Standalone C Sudoku generator (`scripts/sugen.c`) and shell helpers preserved |
+| 22 | Legacy CI Configuration | `PRESERVED_UNCHANGED` | Upstream `.gitlab-ci.yml` preserved; modern CI active via GitHub Actions (`.github/workflows/ci.yml`) |
 
 ---
 
@@ -124,7 +126,7 @@ Empirical verification from the checkpoint tensors and model code confirms:
   - `graph_conv` blocks: 4 sequential residual blocks with EdgeConv message-passing and batch normalization.
   - `linear_out`: `(20, 128)` — Final linear projection from **128-dimensional** hidden representations to 20 amino acid logits.
 - **Exact Parameter Count:** **567,060** parameters (empirical count: 567,060; state-dict tensors: 567,060).
-- **Checkpoint File:** `data/e53-s1952148-d93703104.state` (2,274,321 bytes)
+- **Checkpoint File:** `data/e53-s1952148-d93703104.state` (2,278,071 bytes)
 - **Checkpoint SHA-256:** `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
 
 ---
@@ -142,16 +144,16 @@ Empirical verification from the checkpoint tensors and model code confirms:
 - **Target Structure:** `1n5uA03` (CATH domain from PDB 1N5U, Chain A, 92 amino acids).
 - **Execution Mode:** All-masked MAP greedy inverse folding on CPU.
 - **Result:** **38 / 92 residues** match the native sequence (**41.30% native sequence identity**).
-- **Runtime:** ~1.52 seconds.
-- **Characterization:** This is a *previously validated single-target all-masked integration result* (38/92 = 41.30% native sequence identity). It is NOT claimed to be a generalized benchmark, published baseline, or proof of fold-wide recovery.
+- **Runtime:** Typical CPU runtime ~1.5–2.1 seconds (e.g. 1.52s in initial benchmark, 1.77s in parity log, 2.09s in local verification run). Runtime is run-dependent and varies with CPU platform and system load.
+- **Characterization:** This is a *previously validated single-target all-masked integration result* (38/92 = 41.30% native sequence identity). It is NOT claimed to be a generalized benchmark, published baseline, or proof of fold-wide recovery. Training set membership of `1n5uA03` is not verifiable from accessible metadata without downloading the external multi-gigabyte training shards.
 
 ---
 
 ## 9. Genuine Isolated Clean-Clone Verification
 
-To satisfy Lesson 6, clean-clone validation was executed in an isolated temporary directory using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
+To satisfy Lesson 6 and Lesson 20, clean-clone validation was executed in an isolated temporary directory using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
 
-1. Cloned feature branch `feature/milestone-1-full-implementation`.
+1. Cloned feature branch `feature/milestone-1-full-implementation` at verified commit `0b5cbb949c5c8ff359b4e0b4fa736533dc7dd972`.
 2. Verified cloned working tree clean.
 3. Created isolated virtual environment `.venv` using Python 3.11.9.
 4. Verified `sys.path` contained 0 references to `Protein Design` or any other project directory.
@@ -162,6 +164,8 @@ To satisfy Lesson 6, clean-clone validation was executed in an isolated temporar
 9. Executed independent inference verification on `1n5uA03`:
    `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%`.
 10. Temporary directory cleaned up.
+
+**Commit-Bound Applicability Statement:** Prior clean-clone evidence remains fully applicable to current HEAD `e10411a0760300c130bbc45b55169ded91ed9940` and this reconciliation pass because no executable, runtime, package, model, or CI files changed after the verified clean-clone commit (subsequent commits `ff76b2c`, `c7bcd3c`, `e5c90ad`, `5a420c2`, and `e10411a` modified only documentation, release gates, and archived historical reports). All 32 automated tests and the frontend production build pass with 0 errors on the current tree.
 
 ---
 
@@ -225,7 +229,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 
 - **Pull Request:** [ProteinDesignRND/ProteinSolver PR #1](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 - **Branch Protection:** Active ruleset requires 1 approving review, squash merge, linear history, and signed commits.
-- **Human Merge Gate:** In accordance with Lesson 20 and Lesson 23, PR #1 has NOT been autonomously merged. Human review and approval remain required.
+- **Human Merge Gate:** In accordance with team governance rules and the strict human-merge gate, PR #1 has NOT been autonomously merged. Human review and approval remain required.
 - **Post-Merge Transition:** Once PR #1 is approved and merged into `main` by a human reviewer, the repository will be classified as `MILESTONE_1_READY_FOR_MENTOR_DEMO`.
 
 ---

@@ -119,7 +119,7 @@ class ProteinSolverService:
                 filename="1n5uA03.pdb",
                 chain_id="A",
                 residue_count=92,
-                description="Classic 92-residue alpha-helical CATH domain from historical publication. Benchmark integration test target."
+                description="Classic 92-residue alpha-helical CATH domain from historical publication. Integration sanity check target."
             ),
             ExampleStructure(
                 id="3fndA02",

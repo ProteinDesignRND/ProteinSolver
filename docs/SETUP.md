@@ -56,15 +56,16 @@ pytest tests/ -v
 ---
 
 ## 4. Running the Application
-### Terminal 1: Backend
+### Terminal 1: Backend (from repository root)
 ```bash
-cd apps/backend
-python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+python -m apps.backend.main
 ```
+*(Or alternatively: `python -m uvicorn apps.backend.main:app --host 127.0.0.1 --port 8000`)*
 
-### Terminal 2: Frontend
+### Terminal 2: Frontend (from repository root)
 ```bash
-cd apps/frontend
-npm run dev
+npm --prefix apps/frontend run dev
 ```
+*(Or alternatively: `cd apps/frontend && npm run dev`)*
+
 Open your browser at `http://localhost:5173`.

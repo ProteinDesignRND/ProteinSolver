@@ -67,3 +67,12 @@ Avoid unbounded context growth. Rely on the repository itself as the source of t
 
 ### Lesson 17 (Proposed) — Cross-Repository Evidence Transfer
 Historical evidence may be copied into another project only after explicit source/destination classification. Source research records are not deleted during transfer. Existing destination authoritative documents must not be overwritten. Transfers must record source paths, hashes where practical, transformations, and destination paths. Cross-repository reads must strictly respect the Hard Working-Directory Safety Rule (explicit paths / `git -C`, zero working directory changes).
+
+### Lesson 18 (Proposed) — Current-State Documentation Must Be Bound to Actual Repository State
+Current-state documents must derive branch, HEAD, PR, CI, test and deployment claims from the repository/GitHub state at the time of writing. Historical reports must remain explicitly historical and must not be presented as current.
+
+### Lesson 19 (Proposed) — Copy-Type Terminology Must Match Cryptographic Evidence
+A file altered by line-ending, whitespace, metadata, path or content transformation must not be labelled an exact byte-for-byte copy. Preserve source/destination hashes and record transformations accurately (e.g. "Content copy with line-ending normalization"). Reserve "Exact byte-for-byte copy" strictly for files with matching cryptographic hashes.
+
+### Lesson 20 (Proposed) — Verification Evidence Is Commit-Bound
+Tests, clean-clone runs, CI results and runtime measurements must be tied to the exact repository commit/HEAD on which they were observed. Later documentation must not silently present earlier evidence as evidence for a newer commit; when code has not changed between commits, the preservation of executable state must be explicitly proven rather than assumed.
