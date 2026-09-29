@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `2c559163acd5372513ba397fd400aadd0822bcc0`
+**Current Pushed Branch HEAD:** `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -25,7 +25,7 @@ Following a thorough forensic audit, all prior factual, architectural, terminolo
 - **Native-Sequence Leak Invariant:** Enforced design-path input invariant (`data.x = 20`, `data.y = None`, native sequence rejected by design endpoint) protected by automated regression tests.
 - **Calibrated Result Language:** Single-target recovery on `1n5uA03` is strictly characterized as a *"previously validated single-target all-masked integration result (41.30% native sequence identity, 38/92 residues)"*, avoiding generalized benchmark or published MAP claims.
 - **Genuine Clean-Clone Reproducibility:** Verified in a brand-new, isolated temporary directory with a clean Python 3.11 virtual environment completely free of cross-repository dependencies (32/32 tests passed, npm ci + build passed, real integration inference passed).
-- **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository remains 100% untouched. Zero benchmark candidates, zero folding evaluations, and zero test-set evaluations were performed.
+- **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed. Zero benchmark candidates, zero folding evaluations, and zero test-set evaluations were performed.
 - **Human Merge Gate:** Pull Request #1 is OPEN targeting `main` pending human review and approval.
 
 ---
@@ -153,20 +153,20 @@ Empirical verification from the checkpoint tensors and model code confirms:
 
 To satisfy clean-clone independence and commit-bound verification standards (Lesson 6 and Proposed Lesson 20), an audit of post-`0b5cbb9` commits was conducted. Because modifications to `apps/backend/service.py`, `apps/backend/main.py`, `apps/backend/schemas.py`, `compat/inference.py`, `tests/test_backend_api.py`, `apps/frontend/src/App.tsx`, and `.github/workflows/ci.yml` occurred after commit `0b5cbb9`, the prior clean-clone evidence was determined to be insufficient.
 
-Consequently, a fresh, true remote clean-clone verification was executed from scratch directly on branch commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`:
+Consequently, a fresh, true remote clean-clone verification was executed from scratch directly on branch commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`:
 
 1. **Remote Clone:** Cloned `feature/milestone-1-full-implementation` from GitHub into a fresh, isolated temporary scratch directory (`scratch/clean_clone_verify`) outside both project repositories.
-2. **Working Tree Verification:** Verified clean working tree at commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`.
+2. **Working Tree Verification:** Verified clean working tree at commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`.
 3. **Isolated Python Environment:** Created an isolated Python 3.11 virtual environment (`.venv`) using `uv venv`.
 4. **Environment Isolation Gate:** Verified that `sys.path` contained 0 references to `Protein Design` or any other project directory.
 5. **Authoritative Dependency Installation:** Installed dependencies strictly via `uv pip install -r requirements.txt` and `uv pip install -e . --no-deps`.
 6. **Frontend Dependency & Production Build:** In `apps/frontend/`, executed `npm ci` and `npm run build` (23 modules bundled, 0 TypeScript or bundling errors).
-7. **Automated Pytest Suite:** Executed `pytest tests/ -v`: **32 passed**, 0 failed, in 11.23 seconds.
+7. **Automated Pytest Suite:** Executed `pytest tests/ -v`: **32 passed**, 0 failed, in 11.45 seconds.
 8. **Real Single-Target Integration Inference:** Executed real MAP greedy design on `1n5uA03.pdb` using the loaded checkpoint:
-   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.75s`.
+   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.82s`.
 9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
 
-**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12` and confirmed across subsequent release-gate reconciliation commit `2c559163acd5372513ba397fd400aadd0822bcc0`, with zero changes to executable, runtime, package, model, or CI files.
+**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s. Any subsequent micro-closure changes are strictly documentation consistency updates with zero changes to executable, runtime, test, package, model, or CI files.
 
 ---
 
@@ -204,7 +204,7 @@ The automated test suite contains **32 tests** across 10 test modules:
 
 ## 12. Scientific Firewall Confirmation
 
-The scientific research repository `ProteinDesignRND/ProteinDesign` remains **100% untouched**:
+The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed:
 - 0 candidate sequences generated for scientific experiments.
 - 0 benchmark runs (no E1, no TS50, no ProteinMPNN evaluations).
 - 0 ESMFold or AlphaFold2 folding evaluations.
@@ -216,7 +216,7 @@ The scientific research repository `ProteinDesignRND/ProteinDesign` remains **10
 
 As documented in `docs/KNOWN_LIMITATIONS.md`:
 1. **Single-Target Integration Check vs. Benchmark:** Target `1n5uA03` (92 AA) is an integration sanity fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result. It is NOT a generalized benchmark, published baseline, or proof of multi-target recovery across protein folds. Furthermore, training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Systematic benchmarking is reserved exclusively for the research repository (`ProteinDesignRND/ProteinDesign`).
-2. **CPU Inference Default:** Iterative CSP sequence generation is standardized to CPU in the compatibility layer to prevent PyTorch 2.6 CUDA scalar indexing asserts.
+2. **CPU Inference Default:** Under the verified PyTorch 2.6 environment, the legacy CUDA design path triggered cross-device indexing assertions; the compatibility layer therefore standardizes iterative CSP sequence generation to CPU (typically around 1.5–2.1 seconds on the verified CPU environment; exact runtime is run-dependent).
 3. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
 5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
@@ -249,5 +249,5 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 | **Test Suite** | Full suite passes without weakened assertions | **VERIFIED** (32/32 passed) |
 | **Frontend Build** | TypeScript compilation and Vite build pass | **VERIFIED** (0 errors) |
 | **Clean Clone** | Brand-new isolated environment with 0 cross-repo deps | **VERIFIED** (100% passed in isolated clean clone) |
-| **Research Firewall** | `ProteinDesign` research repository untouched | **VERIFIED** (100% clean) |
+| **Research Firewall** | `ProteinDesign` research repository clean & unexperimented | **VERIFIED** |
 | **Governance** | PR #1 open, human review required | **VERIFIED** (`PENDING_HUMAN_MERGE`) |

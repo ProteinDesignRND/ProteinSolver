@@ -2,12 +2,12 @@
 **Upstream Reproduction, Isolated Compatibility Engine, FastAPI Backend, & React Frontend**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python: 3.11+](https://img.shields.io/badge/Python-3.11.9-brightgreen.svg)](https://python.org)
+[![Python: 3.11.x](https://img.shields.io/badge/Python-3.11.9-brightgreen.svg)](https://python.org)
 [![PyTorch: 2.6](https://img.shields.io/badge/PyTorch-2.6.0%2Bcu124-orange.svg)](https://pytorch.org)
 [![PyG: 2.8](https://img.shields.io/badge/PyG-2.8.0.post1-purple.svg)](https://pyg.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)](https://fastapi.tiangolo.com)
 [![React: 19](https://img.shields.io/badge/React-19.2-61dafb.svg)](https://react.dev)
-[![TypeScript: 5.9](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)](https://www.typescriptlang.org)
+[![TypeScript: 6.0](https://img.shields.io/badge/TypeScript-6.0.2-3178c6.svg)](https://www.typescriptlang.org)
 [![Node.js: >=20.19](https://img.shields.io/badge/Node.js-%3E%3D20.19.0-green.svg)](https://nodejs.org)
 
 ---
@@ -104,7 +104,7 @@ Seven concrete historical incompatibilities between the 2020 codebase and modern
 3. **PyG 2.x `scatter_` In-Place Removal:** Modern PyG removed `torch_geometric.utils.scatter_`. `compat/shims.py` defines a backward-compatible wrapper that routes in-place operations to `torch_scatter.scatter(..., out=out)`.
 4. **PyG Batch Construction Changes:** Modern PyG handles batching semantics differently than PyG 1.x. Handled via explicit `Batch.from_data_list([data])` encapsulation.
 5. **Checkpoint State-Dict Key Mapping:** Published checkpoint keys use training-run names (`graph_conv_0.`) whereas packaged `ProteinNet` defines `graph_conv_1.`. `compat/checkpoint.py` maps these deterministically, validating all 567,060 parameters with zero missing/unexpected keys.
-6. **PyTorch 2.6 Cross-Device Indexing:** Boolean tensor masking in `proteinsolver.utils.protein_design.design_sequence` triggers a CUDA assertion in modern PyTorch. CSP design is standardized to CPU (`device="cpu"`), completing a 92-residue domain in ~1.5s with complete numerical stability.
+6. **PyTorch 2.6 Cross-Device Indexing:** Boolean tensor masking in `proteinsolver.utils.protein_design.design_sequence` triggers a CUDA assertion in modern PyTorch. CSP design is standardized to CPU (`device="cpu"`), completing a 92-residue domain typically around 1.5–2.1 seconds on the verified CPU environment (exact runtime is run-dependent) with complete numerical stability.
 7. **`ruamel.yaml` 0.18+ Deprecation:** Modern `ruamel.yaml` deprecated `yaml.safe_load(...)`. `compat/shims.py` routes `safe_load` to `YAML(typ='safe', pure=True).load`, enabling upstream Sudoku test validation.
 
 ---
@@ -177,7 +177,7 @@ Follow this deterministic sequence during an academic demonstration:
    - Ensure mode is set to **✨ Inverse Folding Design**.
    - Select **Argmax (Greedy MAP)**.
    - Click **🚀 Run ProteinSolver Design**.
-   - Within ~1.5s, the model designs a 92-residue sequence with an interactive residue confidence heatmap.
+   - Typically within 1.5–2.1 seconds on CPU (exact runtime is run-dependent), the model designs a 92-residue sequence with an interactive residue confidence heatmap.
    - Click **📋 Copy FASTA** or **💾 Download**.
 6. **Demonstrate Methodological Integrity (Zero Native Leakage):**
    - Switch mode to **📊 Diagnostic Evaluation**.
@@ -200,7 +200,7 @@ pytest tests/ -v
 - `tests/nn/test_functional.py`: Sparse multi-head attention forward operations.
 - `tests/test_all_masked_design.py`: MAP greedy design and multinomial seed determinism.
 - `tests/test_attributes.py`: Upstream package version and namespace attributes.
-- `tests/test_backend_api.py`: FastAPI endpoints (`/api/health`, `/api/model`, `/api/examples`, `/api/validate`, `/api/design`, `/api/diagnostic`).
+- `tests/test_backend_api.py`: FastAPI endpoints (`/api/health`, `/api/model`, `/api/examples`, `/api/examples/{id}`, `/api/validate`, `/api/design`, `/api/diagnostic`).
 - `tests/test_compat_shims.py`: Fail-loud `fcntl` stub, `kmtools` stubs, PyG `scatter_` in-place shim.
 - `tests/test_compat_structure.py`: BioPython chain metadata and heavy-atom contact matrix extraction.
 - `tests/test_integration_1n5u.py`: End-to-end integration reproducing 41.30% native sequence identity.
@@ -224,7 +224,7 @@ pytest tests/ -v
 
 1. **Single-Target Fixture Boundary:** Target `1n5uA03` is a single-target integration fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result, NOT a general benchmark. Training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Comprehensive scientific benchmarking belongs strictly to the separate research repository (`ProteinDesignRND/ProteinDesign`).
 2. **Display-Only Confidence Bands:** In the Web UI, residue tiles are color-coded based on model selection probability ($\ge 70\%$ green, $40-69\%$ amber, $< 40\%$ rose). These are visualization aids, not calibrated biological probabilities.
-3. **CPU Execution Default:** CSP iterative sequence design is executed on CPU (`device="cpu"`). PyTorch 2.6 introduced cross-device boolean indexing checks that trigger assertions in CUDA execution of the legacy code. CPU execution is fast (~1.5s) and stable without editing upstream code.
+3. **CPU Execution Default:** CSP iterative sequence design is executed on CPU (`device="cpu"`). Under the verified PyTorch 2.6 environment, the legacy CUDA design path triggered cross-device indexing assertions; the compatibility layer therefore standardizes iterative CSP execution to CPU. CPU execution is typically around 1.5–2.1 seconds on the verified CPU environment (exact runtime is run-dependent) and stable without editing upstream code.
 4. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` depend on licensed installations of PyRosetta and Quark.
 5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and retained for reference; full training workflows are legacy.
 6. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.

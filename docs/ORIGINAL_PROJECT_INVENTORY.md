@@ -12,7 +12,7 @@
 Every component in the upstream project is classified into one of the following operational categories:
 
 1. **PRESERVED_UNCHANGED:** Kept exactly as authored in upstream commit `69ef0965`.
-2. **COMPATIBILITY_ADAPTED:** Wrapped or adapted via Tier 2 `compat/` to execute on modern PyTorch 2.6+ / PyG 2.8+ / Python 3.11+.
+2. **COMPATIBILITY_ADAPTED:** Wrapped or adapted via Tier 2 `compat/` to execute on modern PyTorch 2.6+ / PyG 2.8+ / Python 3.11.x.
 3. **WRAPPED_BY_APPLICATION:** Exposed through Tier 3 FastAPI backend and React frontend.
 4. **REPLACED_WHERE_UNAVOIDABLE:** Replaced by modern cleanroom implementation outside upstream code (e.g. `kmbio` replaced by Biopython).
 5. **EXTERNAL_DATA_DEPENDENT:** Valid upstream research code whose full execution requires external multi-gigabyte datasets (e.g. 72M CATH Parquet corpus).

@@ -18,7 +18,7 @@
 | **Compatibility** | Checkpoint key translation | `VERIFIED` | `compat/checkpoint.py` active (567,060 params, 0 missing keys, SHA-256 verified) |
 | **Runtime** | ProteinNet instantiation | `VERIFIED` | Forward pass verified on synthetic and real graphs in `tests/test_model_checkpoint.py` |
 | **Runtime** | All-masked sequence design | `VERIFIED` | 1n5uA03 MAP design produces 41.30% recovery (38/92 residues, ~1.5–2.1s runtime) |
-| **Backend** | FastAPI Service | `VERIFIED` | `apps/backend/` verified via `tests/test_backend_api.py` (8/8 endpoints pass) |
+| **Backend** | FastAPI Service | `VERIFIED` | `apps/backend/` verified via `tests/test_backend_api.py` (all 7 endpoints pass across 8 tests) |
 | **Frontend** | React + Vite UI | `VERIFIED` | `apps/frontend/` verified via `npm run build` (0 TypeScript / bundling errors) |
 | **Testing** | Comprehensive Pytest suite | `VERIFIED` | 32 passed across 10 modules in `tests/` |
 | **Browser E2E** | Automated Browser Interaction | `BROWSER_E2E_NOT_AUTOMATED` | Build and API integration verified; browser E2E binaries not automated in CI |
