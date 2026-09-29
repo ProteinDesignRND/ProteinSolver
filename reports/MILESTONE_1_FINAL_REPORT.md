@@ -10,6 +10,7 @@
 **Verification Basis Commit:** `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` (verified clean clone, 32/32 tests, npm build, real inference)
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
+**Commit Provenance & Live State:** Final branch state is verified from live Git at completion; the exact final live branch HEAD is reported in the AG final response.
 
 
 ---
@@ -25,6 +26,7 @@ Following a thorough forensic audit, the verified factual, architectural, termin
 - **Native-Sequence Leak Invariant:** Enforced design-path input invariant (`data.x = 20`, `data.y = None`, native sequence rejected by design endpoint) protected by automated regression tests.
 - **Calibrated Result Language:** Single-target recovery on `1n5uA03` is strictly characterized as a *"previously validated single-target all-masked integration result (41.30% native sequence identity, 38/92 residues)"*, avoiding generalized benchmark or published MAP claims.
 - **Genuine Clean-Clone Reproducibility:** Verified in a brand-new, isolated temporary directory with a clean Python 3.11 virtual environment completely free of cross-repository dependencies (32/32 tests passed, npm ci + build passed, real integration inference passed).
+- **Scientific Protocol Scope:** All 14 scientific benchmark protocol findings (raw logit scale, percentile rank normalization, target-level statistics, candidate budget, common candidate universe, folding failure taxonomy, fixed-correspondence scTM, etc.) are classified as `OUT_OF_SCOPE_RESEARCH`; they belong exclusively to the separate research repository (`ProteinDesignRND/ProteinDesign`) and were not experimentally executed as part of the ProteinSolver Milestone 1 implementation.
 - **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed. Zero benchmark candidates, zero folding evaluations, and zero test-set evaluations were performed.
 - **Human Merge Gate:** Pull Request #1 is OPEN targeting `main` pending human review and approval.
 
@@ -79,11 +81,11 @@ The upstream project inventory was audited across all 22 meaningful capabilities
 | 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
 | 11 | Sudoku Demo Workflow | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
 | 12 | Sudoku Analysis Workflow | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
-| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards |
+| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards |
 | 14 | Model Selection Workflows | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
 | 15 | Model Scoring Utilities | `EXTERNAL_DEPENDENCY` | Upstream scoring wrappers in `proteinsolver/utils/model_scoring/` preserved intact (require external standalone Rosetta / Modeller) |
 | 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified, deterministic key translation via `compat/checkpoint.py` with 0 missing/unexpected keys and 567,060 parameters |
-| 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Multi-gigabyte external datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
+| 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Externally hosted datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
 | 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
 | 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Binder environment retained for provenance |
 | 20 | Original Unit Tests | `FUNCTIONALLY_VERIFIED` | All compatible upstream unit tests pass cleanly in test suite |
@@ -145,13 +147,13 @@ Empirical verification from the checkpoint tensors and model code confirms:
 - **Execution Mode:** All-masked MAP greedy inverse folding on CPU.
 - **Result:** **38 / 92 residues** match the native sequence (**41.30% native sequence identity**).
 - **Runtime:** Typical CPU runtime ~1.5–2.1 seconds (e.g. 1.52s in initial benchmark, 1.77s in parity log, 2.09s in local verification run). Runtime is run-dependent and varies with CPU platform and system load.
-- **Characterization:** This is a *previously validated single-target all-masked integration result* (38/92 = 41.30% native sequence identity). It is NOT claimed to be a generalized benchmark, published baseline, or proof of fold-wide recovery. Training set membership of `1n5uA03` is not verifiable from accessible metadata without downloading the external multi-gigabyte training shards.
+- **Characterization:** This is a *previously validated single-target all-masked integration result* (38/92 = 41.30% native sequence identity). It is NOT claimed to be a generalized benchmark, published baseline, or proof of fold-wide recovery. Training set membership of `1n5uA03` is not verifiable from accessible metadata without downloading the externally hosted training shards.
 
 ---
 
 ## 9. Genuine Isolated Clean-Clone Verification
 
-To satisfy clean-clone independence and commit-bound verification standards (Lesson 6 and Proposed Lesson 20), an audit of post-`0b5cbb9` commits was conducted. Because modifications to `apps/backend/service.py`, `apps/backend/main.py`, `apps/backend/schemas.py`, `compat/inference.py`, `tests/test_backend_api.py`, `apps/frontend/src/App.tsx`, and `.github/workflows/ci.yml` occurred after commit `0b5cbb9`, the prior clean-clone evidence was determined to be insufficient.
+To satisfy clean-clone independence and commit-bound verification standards (Lesson 6 and Lesson 20), an audit of post-`0b5cbb9` commits was conducted. Because modifications to `apps/backend/service.py`, `apps/backend/main.py`, `apps/backend/schemas.py`, `compat/inference.py`, `tests/test_backend_api.py`, `apps/frontend/src/App.tsx`, and `.github/workflows/ci.yml` occurred after commit `0b5cbb9`, the prior clean-clone evidence was determined to be insufficient.
 
 Consequently, a fresh, true remote clean-clone verification was executed from scratch directly on branch commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`:
 
@@ -215,7 +217,7 @@ The `ProteinDesignRND/ProteinDesign` research repository working tree remains cl
 ## 13. Known Limitations
 
 As documented in `docs/KNOWN_LIMITATIONS.md`:
-1. **Single-Target Integration Check vs. Benchmark:** Target `1n5uA03` (92 AA) is an integration sanity fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result. It is NOT a generalized benchmark, published baseline, or proof of multi-target recovery across protein folds. Furthermore, training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Systematic benchmarking is reserved exclusively for the research repository (`ProteinDesignRND/ProteinDesign`).
+1. **Single-Target Integration Check vs. Benchmark:** Target `1n5uA03` (92 AA) is an integration sanity fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result. It is NOT a generalized benchmark, published baseline, or proof of multi-target recovery across protein folds. Furthermore, training set membership of `1n5uA03` has not been independently verified against the externally hosted training shards. Systematic benchmarking is reserved exclusively for the research repository (`ProteinDesignRND/ProteinDesign`).
 2. **CPU Inference Default:** Under the verified PyTorch 2.6 environment, the legacy CUDA design path triggered cross-device indexing assertions; the compatibility layer therefore standardizes iterative CSP sequence generation to CPU (typically around 1.5–2.1 seconds on the verified CPU environment; exact runtime is run-dependent).
 3. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
@@ -223,7 +225,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 6. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models. These workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 7. **External Training Dataset Shard Dependency:** Full training datasets (externally hosted training shards) are documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI (`BROWSER_E2E_NOT_AUTOMATED`).
-9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation and Ubuntu runner image migration notices are remediated on the pinned runner configuration; current CI run succeeds in 2/2 jobs.
+9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation is remediated, and future runner-image migration exposure is avoided by pinning `ubuntu-24.04`; current CI run `36624250227` succeeded in 2/2 jobs.
 
 ---
 
