@@ -38,8 +38,8 @@ Every component in the upstream project is classified into one of the following 
 | **Model Scoring** | `proteinsolver/utils/model_scoring/` | `EXTERNAL_DEPENDENCY` | Upstream scoring wrappers preserved intact in `proteinsolver/utils/model_scoring/`; require external standalone Rosetta binaries and/or Modeller. |
 | **Protein Datasets** | `proteinsolver/datasets/protein.py` | `PRESERVED_UNCHANGED` | PyG Dataset classes for protein contact graphs (`row_to_data`, `transform_edge_attr`). |
 | **Sudoku Datasets** | `proteinsolver/datasets/sudoku.py` | `PRESERVED_UNCHANGED` | PyG Dataset classes for Sudoku boards. |
-| **N-Queens Datasets** | `proteinsolver/datasets/nqueens.py` | `PRESERVED_UNCHANGED` | PyG Dataset classes for N-Queens constraint problems. |
-| **Graph Labeling** | `proteinsolver/datasets/graph_labeling.py`| `PRESERVED_UNCHANGED` | Generic graph coloring/labeling problem dataset. |
+| **N-Queens Dataset Stub** | `proteinsolver/datasets/nqueens.py` | `PRESERVED_UNCHANGED` | Upstream placeholder abstract Dataset class (`class NQueensDataset(Dataset): ...`). Preserved intact. |
+| **Graph-Labeling Dataset Stub** | `proteinsolver/datasets/graph_labeling.py`| `PRESERVED_UNCHANGED` | Upstream placeholder abstract Dataset class (`class GraphLabelingDataset(Dataset): ...`). Preserved intact. |
 | **Legacy Voila Dashboard**| `proteinsolver/dashboard/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 ipywidgets / Voila interactive dashboard preserved for provenance; modernized by `apps/frontend/` (React 19 + TypeScript + Vite). |
 | **Example PDB Inputs** | `proteinsolver/data/inputs/` | `PRESERVED_UNCHANGED` | 6 real structure fixtures (`1n5uA03.pdb`, `3fndA02.pdb`, `4beuA02.pdb`, etc.). |
 | **Published Checkpoint** | `data/e53-s1952148-d93703104.state` | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified (`1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`); deterministic key translation applied during loading by `compat/checkpoint.py` with 0 missing keys, 0 unexpected keys, and 567,060 parameters. |

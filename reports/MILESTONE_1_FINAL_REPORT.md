@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `fcb7f3f35070e6ace56f171c47b74f5e5aee6438`
+**Current Pushed Branch HEAD:** `5334b09b785ca1d172b15636ce8ab8b3d319473b`
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -220,7 +220,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 3. **Unsupported Windows POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError` rather than silently pretending locks exist.
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
 5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
-6. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models.
+6. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models. These workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 

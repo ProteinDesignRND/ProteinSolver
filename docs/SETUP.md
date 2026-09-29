@@ -10,7 +10,7 @@
 - **Operating System:** Windows 10/11 (verified environment: Windows 11); Linux/macOS setup paths provided as unverified references
 - **Python:** 3.11.x (tested on Python 3.11.9)
 - **Node.js:** `>=20.19.0` (tested on Node.js v24.18.0, npm 11.16.0)
-- **Hardware:** CPU or NVIDIA GPU with CUDA support
+- **Hardware:** CPU is sufficient for the verified application path; NVIDIA GPU/CUDA is optional for supported model forward operations (iterative CSP sequence design is standardized to CPU).
 
 ---
 
@@ -44,14 +44,24 @@ python -m venv .venv
 # Linux/macOS:
 source .venv/bin/activate
 
-pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e . --no-deps
 ```
 
-### Step 2.3: Verify Checkpoint
-The verified published checkpoint is included at:
-`data/e53-s1952148-d93703104.state` (SHA-256: `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`).
+### Step 2.3: Verify Checkpoint Integrity
+The verified published checkpoint is included at `data/e53-s1952148-d93703104.state`.
+Verify its cryptographic checksum before running:
+
+```powershell
+# Windows PowerShell:
+Get-FileHash .\data\e53-s1952148-d93703104.state -Algorithm SHA256
+```
+```bash
+# Cross-Platform Python:
+python -c "import hashlib; print(hashlib.sha256(open('data/e53-s1952148-d93703104.state','rb').read()).hexdigest().upper())"
+```
+Expected SHA-256:
+`1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
 
 ### Step 2.4: Setup Frontend
 ```bash

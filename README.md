@@ -78,6 +78,7 @@ The following original documentation sections from Alexey Strokach's repository 
 
 ### Upstream Pre-trained Models
 Original models can be downloaded using `wget` from the historical model registry:
+*(HISTORICAL UPSTREAM COMMAND — may no longer be operational; modern application uses bundled local checkpoint `data/e53-s1952148-d93703104.state`)*
 ```bash
 wget -r -nH --cut-dirs 1 --reject "index.html*" "http://models.proteinsolver.org/v0.1/"
 ```
@@ -85,6 +86,7 @@ For examples of using pretrained ProteinSolver models in downstream applications
 
 ### Upstream Training and Validation Datasets
 Data used to train the original networks on Sudoku puzzles and protein sequence reconstruction is hosted at:
+*(HISTORICAL UPSTREAM COMMAND — may no longer be operational; documented for reference)*
 ```bash
 wget -r -nH --reject "index.html*" "http://deep-protein-gen.data.proteinsolver.org/"
 ```
@@ -115,6 +117,7 @@ Seven concrete historical incompatibilities between the 2020 codebase and modern
 - **Python**: 3.11.x (tested on 3.11.9)
 - **Node.js**: `>=20.19.0` (tested on Node v24.18.0, npm 11.16.0)
 - **OS**: Windows 10/11 (verified environment: Windows 11); Linux/macOS setup paths provided as unverified references
+- **Hardware**: CPU is sufficient for the verified application path; NVIDIA GPU/CUDA is optional for supported model forward operations (iterative CSP sequence design is standardized to CPU).
 
 ### Step 1: Clone Repository
 ```bash
@@ -137,7 +140,19 @@ uv pip install -r requirements.txt
 uv pip install -e . --no-deps
 ```
 
-### Step 3: Install Frontend Dependencies
+### Step 3: Verify Checkpoint Integrity
+Verify the cryptographic SHA-256 checksum of the bundled checkpoint:
+```powershell
+# Windows PowerShell:
+Get-FileHash .\data\e53-s1952148-d93703104.state -Algorithm SHA256
+```
+```bash
+# Cross-Platform Python:
+python -c "import hashlib; print(hashlib.sha256(open('data/e53-s1952148-d93703104.state','rb').read()).hexdigest().upper())"
+```
+Expected SHA-256: `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
+
+### Step 4: Install Frontend Dependencies
 ```bash
 cd apps/frontend
 npm ci
@@ -225,7 +240,7 @@ pytest tests/ -v
 1. **Single-Target Fixture Boundary:** Target `1n5uA03` is a single-target integration fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target all-masked integration result, NOT a general benchmark. Training set membership of `1n5uA03` has not been independently verified against the external multi-gigabyte training shards. Comprehensive scientific benchmarking belongs strictly to the separate research repository (`ProteinDesignRND/ProteinDesign`).
 2. **Display-Only Confidence Bands:** In the Web UI, residue tiles are color-coded based on model selection probability ($\ge 70\%$ green, $40-69\%$ amber, $< 40\%$ rose). These are visualization aids, not calibrated biological probabilities.
 3. **CPU Execution Default:** CSP iterative sequence design is executed on CPU (`device="cpu"`). Under the verified PyTorch 2.6 environment, the legacy CUDA design path triggered cross-device indexing assertions; the compatibility layer therefore standardizes iterative CSP execution to CPU. CPU execution is typically around 1.5–2.1 seconds on the verified CPU environment (exact runtime is run-dependent) and stable without editing upstream code.
-4. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` and wrappers in `proteinsolver/utils/model_scoring/` depend on external installations of standalone Rosetta binaries and Modeller, and reference QUARK ab initio prediction models.
+4. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` depend on external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK ab initio structural models. These scoring workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
 6. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 
