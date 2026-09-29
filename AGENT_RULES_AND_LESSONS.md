@@ -7,7 +7,7 @@ This document records the non-negotiable principles, lessons, and boundaries gov
 ## 1. Core Methodological Lessons
 
 ### Lesson 1 — Runtime Verification != Milestone 1 Completion
-Verifying that a model forward pass executes is an E0 milestone. Full Milestone 1 requires complete upstream preservation, compatibility adaptations, production backend, usable frontend, automated test suites, clean-clone reproducibility, and team git governance.
+Verifying that a model forward pass executes is an E0 milestone. Full Milestone 1 requires complete upstream preservation, compatibility adaptations, mentor-ready application backend, usable frontend, automated test suites, clean-clone reproducibility, and team git governance.
 
 ### Lesson 2 — Explicit Upstream Provenance & Push Safety
 Baseline commit `69ef0965a3fc3bf191804035b539720a06e58ba6` is preserved through a GitHub fork of `ostrokach/proteinsolver`. Downstream code is strictly segregated from upstream files. The upstream remote push URL must always be set to `no_push` (`git remote set-url --push upstream no_push`) to prevent accidental upstream pushes.

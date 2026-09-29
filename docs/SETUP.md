@@ -42,7 +42,7 @@ The verified published checkpoint is included at:
 ### Step 2.4: Setup Frontend
 ```bash
 cd apps/frontend
-npm install
+npm ci
 cd ../..
 ```
 

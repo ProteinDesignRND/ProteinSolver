@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `e10411a0760300c130bbc45b55169ded91ed9940`
+**Current Pushed Branch HEAD:** `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -151,21 +151,22 @@ Empirical verification from the checkpoint tensors and model code confirms:
 
 ## 9. Genuine Isolated Clean-Clone Verification
 
-To satisfy Lesson 6 and Lesson 20, clean-clone validation was executed in an isolated temporary directory using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
+To satisfy clean-clone independence and commit-bound verification standards (Lesson 6 and Proposed Lesson 20), an audit of post-`0b5cbb9` commits was conducted. Because modifications to `apps/backend/service.py`, `apps/backend/main.py`, `apps/backend/schemas.py`, `compat/inference.py`, `tests/test_backend_api.py`, `apps/frontend/src/App.tsx`, and `.github/workflows/ci.yml` occurred after commit `0b5cbb9`, the prior clean-clone evidence was determined to be insufficient.
 
-1. Cloned feature branch `feature/milestone-1-full-implementation` at verified commit `0b5cbb949c5c8ff359b4e0b4fa736533dc7dd972`.
-2. Verified cloned working tree clean.
-3. Created isolated virtual environment `.venv` using Python 3.11.9.
-4. Verified `sys.path` contained 0 references to `Protein Design` or any other project directory.
-5. Installed dependencies from pinned `requirements.txt`.
-6. Installed `ProteinSolver` in editable mode with `--no-deps`.
-7. In `apps/frontend/`, executed `npm ci` and `npm run build` (0 errors).
-8. Executed full test suite: **32 passed** (0 failed).
-9. Executed independent inference verification on `1n5uA03`:
-   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%`.
-10. Temporary directory cleaned up.
+Consequently, a fresh, true remote clean-clone verification was executed from scratch directly on branch commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`:
 
-**Commit-Bound Applicability Statement:** Prior clean-clone evidence remains fully applicable to current HEAD `e10411a0760300c130bbc45b55169ded91ed9940` and this reconciliation pass because no executable, runtime, package, model, or CI files changed after the verified clean-clone commit (subsequent commits `ff76b2c`, `c7bcd3c`, `e5c90ad`, `5a420c2`, and `e10411a` modified only documentation, release gates, and archived historical reports). All 32 automated tests and the frontend production build pass with 0 errors on the current tree.
+1. **Remote Clone:** Cloned `feature/milestone-1-full-implementation` from GitHub into a fresh, isolated temporary scratch directory (`scratch/clean_clone_verify`) outside both project repositories.
+2. **Working Tree Verification:** Verified clean working tree at commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`.
+3. **Isolated Python Environment:** Created an isolated Python 3.11 virtual environment (`.venv`) using `uv venv`.
+4. **Environment Isolation Gate:** Verified that `sys.path` contained 0 references to `Protein Design` or any other project directory.
+5. **Authoritative Dependency Installation:** Installed dependencies strictly via `uv pip install -r requirements.txt` and `uv pip install -e . --no-deps`.
+6. **Frontend Dependency & Production Build:** In `apps/frontend/`, executed `npm ci` and `npm run build` (23 modules bundled, 0 TypeScript or bundling errors).
+7. **Automated Pytest Suite:** Executed `pytest tests/ -v`: **32 passed**, 0 failed, in 11.23 seconds.
+8. **Real Single-Target Integration Inference:** Executed real MAP greedy design on `1n5uA03.pdb` using the loaded checkpoint:
+   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.75s`.
+9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
+
+**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`. Subsequent release-closure changes are strictly documentation and setup calibrations (`docs/SETUP.md` `npm install` -> `npm ci`, `AGENT_RULES_AND_LESSONS.md` terminology, and report synchronization) with zero changes to executable, runtime, package, model, or CI files.
 
 ---
 
