@@ -67,30 +67,30 @@ git diff 69ef0965..HEAD --name-status
 
 The upstream project inventory was audited across all 22 meaningful capabilities and documented in `docs/ORIGINAL_PROJECT_PARITY.md`:
 
-| # | Upstream Component | Classification | Current Disposition |
-| :--- | :--- | :--- | :--- |
-| 1 | `ProteinNet` Core GNN Model | `PRESERVED_UNCHANGED` | Packaged in `proteinsolver/models/proteinnet.py`, wrapped by `compat/checkpoint.py` (567,060 params, hidden dim 128) |
-| 2 | EdgeConv GNN Modules | `PRESERVED_UNCHANGED` | `proteinsolver/nn/` EdgeConv modules executed natively |
-| 3 | Functional/Activation Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/nn/test_functional.py` |
-| 4 | Protein Datasets & Transforms | `PRESERVED_UNCHANGED` | `proteinsolver/datasets/protein.py` preserved and active |
-| 5 | Sudoku Datasets & Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests pass) |
-| 6 | N-Queens Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/nqueens.py` |
-| 7 | Graph-Labeling Dataset Stub | `PRESERVED_UNCHANGED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/graph_labeling.py` |
-| 8 | Protein Design Iterative CSP | `COMPATIBILITY_ADAPTED` | Upstream algorithm source preserved intact in `proteinsolver/utils/protein_design.py`; modern application execution is compatibility-adapted via `compat/inference.py` on CPU |
-| 9 | Protein Demo Workflow | `APPLICATION_WRAPPED` | Modernized into interactive FastAPI + React application (`apps/backend/` + `apps/frontend/`) |
-| 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
-| 11 | Sudoku Demo Workflow | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
-| 12 | Sudoku Analysis Workflow | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
-| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards |
-| 14 | Model Selection Workflows | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
-| 15 | Model Scoring Utilities | `EXTERNAL_DEPENDENCY` | Upstream scoring wrappers in `proteinsolver/utils/model_scoring/` preserved intact (require external standalone Rosetta / Modeller) |
-| 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified, deterministic key translation via `compat/checkpoint.py` with 0 missing/unexpected keys and 567,060 parameters |
-| 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Externally hosted datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
-| 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
-| 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Binder environment retained for provenance |
-| 20 | Original Unit Tests | `FUNCTIONALLY_VERIFIED` | All compatible upstream unit tests pass cleanly in test suite |
-| 21 | C & Shell Utilities | `PRESERVED_UNCHANGED` | Standalone C Sudoku generator (`scripts/sugen.c`) and shell helpers preserved |
-| 22 | Legacy CI Configuration | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Upstream `.gitlab-ci.yml` preserved for provenance; modern operational CI active via GitHub Actions (`.github/workflows/ci.yml`) |
+| # | Upstream Component | Upstream Path | Disposition | Verification Status | Current Modern Status & Notes |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| 1 | `ProteinNet` Core GNN Model | `proteinsolver/models/proteinnet.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | Packaged in `proteinsolver/models/proteinnet.py`, wrapped by `compat/checkpoint.py` (567,060 params, hidden dim 128) |
+| 2 | EdgeConv GNN Modules | `proteinsolver/nn/edge_conv_mod.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | `proteinsolver/nn/` EdgeConv modules executed natively |
+| 3 | Functional/Activation Utilities | `proteinsolver/nn/functional.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | Tested in `tests/nn/test_functional.py` |
+| 4 | Protein Datasets & Transforms | `proteinsolver/datasets/protein*.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | `proteinsolver/datasets/protein.py` preserved and active |
+| 5 | Sudoku Datasets & Utilities | `proteinsolver/datasets/sudoku*.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests pass) |
+| 6 | N-Queens Dataset Stub | `proteinsolver/datasets/nqueens.py` | `PRESERVED_UNCHANGED` | `NOT_FUNCTIONALLY_VERIFIED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/nqueens.py` |
+| 7 | Graph-Labeling Dataset Stub | `proteinsolver/datasets/graph_labeling.py` | `PRESERVED_UNCHANGED` | `NOT_FUNCTIONALLY_VERIFIED` | Upstream placeholder abstract `Dataset` class preserved intact in `proteinsolver/datasets/graph_labeling.py` |
+| 8 | Protein Design Iterative CSP | `proteinsolver/utils/protein_design.py` | `COMPATIBILITY_ADAPTED` | `FUNCTIONALLY_VERIFIED` | Upstream algorithm source preserved intact in `proteinsolver/utils/protein_design.py`; modern application execution is compatibility-adapted via `compat/inference.py` on CPU |
+| 9 | Protein Demo Workflow | `notebooks/20_protein_demo.ipynb` | `APPLICATION_WRAPPED` | `FUNCTIONALLY_VERIFIED` | Modernized into interactive FastAPI + React application (`apps/backend/` + `apps/frontend/`) |
+| 10 | Protein Analysis Notebook | `notebooks/06_protein_analysis.ipynb` | `CLI/NOTEBOOK_RETAINED` | `NOT_FUNCTIONALLY_VERIFIED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
+| 11 | Sudoku Demo Workflow | `notebooks/20_sudoku_demo.ipynb` | `CLI/NOTEBOOK_RETAINED` | `NOT_FUNCTIONALLY_VERIFIED` | Retained and executable via `proteinsolver.utils.sudoku` |
+| 12 | Sudoku Analysis Workflow | `notebooks/06_sudoku_analysis.ipynb` | `CLI/NOTEBOOK_RETAINED` | `NOT_FUNCTIONALLY_VERIFIED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
+| 13 | Training Workflows | `notebooks/04_protein_train*.ipynb` | `CLI/NOTEBOOK_RETAINED` | `NOT_VERIFIABLE_FROM_REPOSITORY` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards |
+| 14 | Model Selection Workflows | `notebooks/05_select_best_model.ipynb` | `CLI/NOTEBOOK_RETAINED` | `NOT_FUNCTIONALLY_VERIFIED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
+| 15 | Model Scoring Utilities | `proteinsolver/utils/model_scoring/` | `EXTERNAL_DEPENDENCY` | `NOT_FUNCTIONALLY_VERIFIED` | Upstream scoring wrappers in `proteinsolver/utils/model_scoring/` preserved intact (require external standalone Rosetta / Modeller) |
+| 16 | Pretrained Protein Checkpoint | `data/e53-s1952148-d93703104.state` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified, deterministic key translation via `compat/checkpoint.py` with 0 missing/unexpected keys and 567,060 parameters |
+| 17 | External Training Datasets | `http://deep-protein-gen.data.proteinsolver.org/` | `EXTERNAL_DEPENDENCY` | `NOT_VERIFIABLE_FROM_REPOSITORY` | Externally hosted datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
+| 18 | Docker Support | `binder/Dockerfile`, `.ci/docker/Dockerfile` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | `NOT_FUNCTIONALLY_VERIFIED` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
+| 19 | Binder Support | `binder/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | `NOT_FUNCTIONALLY_VERIFIED` | Legacy Binder environment retained for provenance |
+| 20 | Original Unit Tests | `tests/nn/test_functional.py`, `tests/utils/test_sudoku.py` | `PRESERVED_UNCHANGED` | `FUNCTIONALLY_VERIFIED` | All compatible upstream unit tests pass cleanly in test suite |
+| 21 | C & Shell Utilities | `scripts/sugen.c`, `scripts/run_notebook_*.sh` | `PRESERVED_UNCHANGED` | `NOT_FUNCTIONALLY_VERIFIED` | Standalone C Sudoku generator (`scripts/sugen.c`) and shell helpers preserved |
+| 22 | Legacy CI Configuration | `.gitlab-ci.yml`, `.ci/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | `NOT_FUNCTIONALLY_VERIFIED` | Upstream `.gitlab-ci.yml` preserved for provenance; modern operational CI active via GitHub Actions (`.github/workflows/ci.yml`) |
 
 ---
 
@@ -225,7 +225,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 6. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models. These workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 7. **External Training Dataset Shard Dependency:** Full training datasets (externally hosted training shards) are documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI (`BROWSER_E2E_NOT_AUTOMATED`).
-9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation is remediated, and future runner-image migration exposure is avoided by pinning `ubuntu-24.04`; current CI run `36624250227` succeeded in 2/2 jobs.
+9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation is remediated, and future runner-image migration exposure is avoided by pinning `ubuntu-24.04`; current CI run `36625875281` succeeded in 2/2 jobs.
 
 ---
 

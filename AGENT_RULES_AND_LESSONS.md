@@ -88,3 +88,6 @@ Current-state evidence must reference the exact commit whose executable state wa
 
 ### Lesson 24 — Historical Evidence Immutability
 Historical reports remain historical evidence; active truth is updated in current documents without rewriting or falsifying the historical audit trail.
+
+### Lesson 25 — Epistemic Classification of Research-Scoped Benchmark Protocols
+Scientific benchmark protocol findings (e.g., raw logit scale, percentile-rank normalization, target-level statistics, candidate budget $K$, common candidate universe, folding failure taxonomy, scTM correspondence) that belong exclusively to the separate scientific research repository must never be classified as `CONFIRMED_ALREADY_SATISFIED` or "verified" within the implementation repository. Their truthful epistemic disposition is `OUT_OF_SCOPE_RESEARCH` (or `NOT_VERIFIABLE_FROM_REPOSITORY`), explicitly documenting that they were reviewed for scope and mapped to the research repository rather than experimentally executed in Milestone 1.

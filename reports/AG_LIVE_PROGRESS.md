@@ -15,16 +15,14 @@
 
 | Stage | Status | Verification & Artifact Details |
 | :--- | :---: | :--- |
-| **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and working tree clean. |
-| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, CI run 36624250227 green (2/2 jobs). Research repo and historical reference clone clean. |
-| **STAGE_2_CROSS_AI_FINDINGS_RECONCILIATION** | **COMPLETE** | Reconciled 14 implementation findings as `CONFIRMED_ALREADY_SATISFIED`; categorized all 14 scientific benchmark findings as `OUT_OF_SCOPE_RESEARCH` (scoped to research repo, not executed in Milestone 1 implementation). |
-| **STAGE_3_SOURCE_AND_UPSTREAM_AUDIT** | **COMPLETE** | Proved complete upstream retention (581/581 files retained, 0 deletions) and source code freeze (0 files modified in `proteinsolver/**`, `tests/nn/**`, `tests/utils/**`). |
-| **STAGE_4_SECURITY_AND_LEAKAGE_AUDIT** | **COMPLETE** | Verified design-path input invariant (`batch.x = 20`, `batch.y = None`), `/api/design` extra field rejection, sanitized 500 responses, path traversal protection, local CORS, and diagnostic isolation. |
-| **STAGE_5_DOCUMENTATION_TRUTH_AUDIT** | **COMPLETE** | Audited active documents for stale SHAs, training shard phrasing, self-referential commit claims, stale Proposed Lesson 20, and CI status semantics. |
-| **STAGE_6_CONSOLIDATED_REPAIR** | **COMPLETE** | Corrected training shard phrasing in inventory, parity, limitations, and README; removed stale "Proposed Lesson 20"; updated CI status semantics (remediated Node 20 deprecation, avoided Ubuntu 26 migration via `ubuntu-24.04` pinning); classified scientific findings as `OUT_OF_SCOPE_RESEARCH`. |
-| **STAGE_7_TEST_BUILD_CI_VERIFICATION** | **COMPLETE** | Executed local test suite: 32/32 pytest tests passed; executed frontend production build: 0 errors; verified live GitHub Actions CI run `36624250227`: 2/2 jobs passed. |
-| **STAGE_8_FINAL_APPLICABILITY_AND_GOVERNANCE_CHECK** | **COMPLETE** | Clean-clone evidence tied to `VERIFICATION_BASIS_COMMIT: c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`; zero executable code modified; research firewall verified; human merge gate enforced. |
-| **STAGE_9_CLOSURE** | **COMPLETE** | Final quality checklist satisfied; PR #1 remains OPEN, awaiting human code review and squash merge into `main`. |
+| **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and clean working tree. |
+| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, live GitHub CI run 36625875281 green (2/2 jobs succeeded). Research repo and upstream reference clone verified clean. |
+| **STAGE_2_RESIDUAL_DOCUMENTATION_AUDIT** | **COMPLETE** | Audited active documents for commit-binding clarity, training shard phrasing, self-referential commit claims, and limitation references. |
+| **STAGE_3_DURABLE_RULE_INTEGRITY** | **COMPLETE** | Preserved canonical Lessons 21–24 in `AGENT_RULES_AND_LESSONS.md`; added Lesson 25 defining epistemic classification for research-scoped benchmark protocols (`OUT_OF_SCOPE_RESEARCH`). |
+| **STAGE_4_TAXONOMY_RECONCILIATION** | **COMPLETE** | Reconciled disposition categories and verification statuses into orthogonal dimensions across `docs/ORIGINAL_PROJECT_INVENTORY.md`, `docs/ORIGINAL_PROJECT_PARITY.md`, and `reports/MILESTONE_1_FINAL_REPORT.md`. |
+| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, updated CI run references (`36625875281`), and confirmed absence of self-referential commit hashes in committed documents. |
+| **STAGE_6_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |
+| **STAGE_7_FINAL_GOVERNANCE_CHECK** | **COMPLETE** | Verified PR #1 remains OPEN targeting `main` pending human review and approval; state `PENDING_HUMAN_MERGE`. |
 
 ---
 
