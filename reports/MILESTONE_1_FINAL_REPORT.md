@@ -1,253 +1,244 @@
-# ProteinSolver Milestone 1 — Final Implementation & Verification Report
+# ProteinSolver Milestone 1 — Forensic Audit, Correction & Final Verification Report
 
-**Status Classification:** `MILESTONE_1_READY_FOR_MENTOR_DEMO`  
+**Status Classification:** `MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS`  
+**Governance State:** `PENDING_HUMAN_MERGE`  
 **Date:** September 29, 2026  
 **Environment:** Windows 11, Antigravity IDE, Python 3.11.9, PyTorch 2.6.0+cu124, PyG 2.8.0.post1, Node v24.18.0, npm 11.16.0  
-**Target Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (Local: `d:\Projects\ProteinSolver`)  
-**Research Repository (Isolated):** `ProteinDesignRND/ProteinDesign` (Local: `d:\Projects\Protein Design`)  
+**Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (Local: `D:\Projects\ProteinSolver`)  
+**Research Repository (Firewalled):** `ProteinDesignRND/ProteinDesign` (Local: `D:\Projects\Protein Design`)  
+**Feature Branch:** `feature/milestone-1-full-implementation`  
+**Current HEAD SHA:** `5ee17c9b0e14a1a67ad45e6eb4e8c56be0e6538b`  
+**Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)  
 
 ---
 
 ## 1. Executive Summary
 
-Milestone 1 has successfully reproduced Alexey Strokach's *Cell Systems* 2020 ProteinSolver project as an independent, fully runnable, modern implementation repository under the `ProteinDesignRND` organization. 
+Milestone 1 has delivered a complete, runnable, and independently verified reproduction of Alexey Strokach's *Cell Systems* 2020 ProteinSolver graph neural network system under the `ProteinDesignRND` organization.
 
-The implementation preserves the frozen upstream source code from baseline commit `69ef0965a3fc3bf191804035b539720a06e58ba6` through an official GitHub fork. All runtime adaptations reside in an isolated cleanroom compatibility layer (`compat/`), wrapped by a production FastAPI REST backend (`apps/backend/`) and a modern dark-mode React 19 + TypeScript + Vite frontend (`apps/frontend/`). 
-
-The complete test suite of **32 automated tests passes in 12.06 seconds**, reproducing the verified single-target baseline of **41.30% native sequence identity** (38/92 residues) on target `1n5uA03` under pure all-masked inverse folding (zero native sequence leakage). The clean-clone test passed in an isolated temporary directory, and Pull Request [#1](https://github.com/ProteinDesignRND/ProteinSolver/pull/1) has been opened targeting `main`.
+Following a thorough forensic audit, all prior factual, architectural, terminology, and reproducibility inconsistencies have been permanently resolved:
+- **Upstream Source Frozen:** 100% of the upstream `proteinsolver/` package from scientific baseline commit `69ef0965` is preserved unchanged (0 files modified).
+- **Exact Model Architecture:** Confirmed `ProteinNet` has a hidden dimensionality of **128** (not 162) and contains exactly **567,060** parameters matching the published checkpoint.
+- **Compatibility Issues:** Exactly **7** compatibility issues were identified, resolved in `compat/`, and regression-tested, including a fail-loud Windows `fcntl` locking stub and a modern BioPython structure extraction engine.
+- **Native-Sequence Leak Invariant:** Enforced design-path input invariant (`data.x = 20`, `data.y = None`, native sequence rejected by design endpoint) protected by automated regression tests.
+- **Calibrated Result Language:** Single-target recovery on `1n5uA03` is strictly characterized as a *"previously validated single-target all-masked integration result (41.30% native sequence identity, 38/92 residues)"*, avoiding generalized benchmark or published MAP claims.
+- **Genuine Clean-Clone Reproducibility:** Verified in a brand-new, isolated temporary directory with a clean Python 3.11 virtual environment completely free of cross-repository dependencies (32/32 tests passed, npm ci + build passed, real integration inference passed).
+- **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository remains 100% untouched. Zero benchmark candidates, zero folding evaluations, and zero test-set evaluations were performed.
+- **Human Merge Gate:** Pull Request #1 is OPEN targeting `main` pending human review and approval.
 
 ---
 
-## 2. Upstream Provenance & Repository Architecture
+## 2. Upstream Lineage & Provenance Audit
 
-| Metric / Parameter | Specification | Verification Evidence |
+| Parameter | Value | Verification Evidence |
 | :--- | :--- | :--- |
-| **Upstream Repository** | `ostrokach/proteinsolver` | GitHub API upstream verification |
-| **Upstream Author** | Alexey Strokach et al. (*Cell Systems* 2020) | Paper DOI: `10.1016/j.cels.2020.08.016` |
-| **Upstream Baseline Commit** | `69ef0965a3fc3bf191804035b539720a06e58ba6` | Preserved as baseline ancestor commit |
-| **Creation Method** | **GitHub Fork** (`gh repo fork ostrokach/proteinsolver --org ProteinDesignRND`) | Retains 100% of upstream commit history |
-| **Default Branch** | `main` (diverged from upstream default `master`) | Verified via `gh repo edit --default-branch main` |
-| **License** | MIT License | Unchanged; upstream copyright notice preserved |
-| **Implementation Branch** | `feature/milestone-1-full-implementation` | Commit `ade2b28` |
-| **Pull Request** | `https://github.com/ProteinDesignRND/ProteinSolver/pull/1` | Open, targeting `main` |
-
-### Architectural Boundaries
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│  Tier 1: Upstream Original Package (proteinsolver/)                      │
-│  - 100% frozen historical source (commit 69ef0965)                       │
-│  - 4-block EdgeConv GNN (567,060 parameters)                             │
-│  - CSP iterative sequence design algorithm                               │
-└────────────────────────────────────▲─────────────────────────────────────┘
-                                     │ (imported & wrapped, never edited)
-┌────────────────────────────────────┴─────────────────────────────────────┐
-│  Tier 2: Cleanroom Compatibility Layer (compat/)                         │
-│  - compat/shims.py: Windows fcntl stub, kmtools stubs, PyG scatter_ shim │
-│  - compat/structure.py: BioPython structure parsing & contact graphs     │
-│  - compat/checkpoint.py: Layer key translation (graph_conv_0 -> 1)       │
-│  - compat/inference.py: All-masked inverse folding engine (no leakage)   │
-└────────────────────────────────────▲─────────────────────────────────────┘
-                                     │
-┌────────────────────────────────────┴─────────────────────────────────────┐
-│  Tier 3: Modern Application Layer (apps/)                                │
-│  - apps/backend/: FastAPI REST service (health, model, design, diag)     │
-│  - apps/frontend/: React 19 + TypeScript + Vite interactive web UI       │
-└──────────────────────────────────────────────────────────────────────────┘
-```
+| **Upstream Repository** | `https://github.com/ostrokach/proteinsolver` | Official upstream baseline |
+| **Upstream Acquisition HEAD** | `69ef0965a3fc3bf191804035b539720a06e58ba6` | Verified via `git ls-remote upstream refs/heads/master` |
+| **Scientific Reference Commit** | `69ef0965a3fc3bf191804035b539720a06e58ba6` | Identical to acquisition HEAD; full upstream history preserved |
+| **Fork Creation Method** | GitHub Fork (`gh repo fork ostrokach/proteinsolver --org ProteinDesignRND`) | Complete Git commit history retained |
+| **Upstream Push Safety** | `git remote set-url --push upstream no_push` | Push URL configured to `no_push` |
+| **License** | MIT License | Preserved; upstream copyright notices intact |
 
 ---
 
-## 3. Forensic Inventory of Original Upstream Components
+## 3. Strict Upstream File Integrity Audit
 
-Every major upstream component was classified according to the forensic inventory protocol:
+A full Git diff was executed against scientific baseline commit `69ef0965a3fc3bf191804035b539720a06e58ba6`:
 
-| Category | Component / Path | Status Classification | Details |
+```
+git diff 69ef0965..HEAD --name-status
+```
+
+### File Classification Results:
+- `proteinsolver/**`: **0 files modified**. The upstream package source code is 100% frozen.
+- `tests/nn/**` and `tests/utils/**`: **0 files modified**. Upstream unit tests preserved.
+- Root repository baseline files:
+  1. `.gitignore`: **Class B (Legitimate downstream repository metadata)**. Added `!apps/frontend/index.html` and modern IDE ignores.
+  2. `README.md`: **Class B (Legitimate downstream repository metadata)**. Updated to provide comprehensive modern setup, architecture, and provenance instructions.
+  3. `setup.py`: **Class C (Legitimate compatibility change)**. Updated file reader with `encoding="utf-8", errors="replace"` to prevent Windows cp1252 charmap decoding crashes on README UTF-8 characters.
+
+---
+
+## 4. Original Upstream Project Parity Matrix
+
+The upstream project inventory was audited across all 22 meaningful capabilities and documented in `docs/ORIGINAL_PROJECT_PARITY.md`:
+
+| # | Upstream Component | Classification | Current Disposition |
 | :--- | :--- | :--- | :--- |
-| **Package Core** | `proteinsolver/models/proteinnet.py` | `PRESERVED_UNCHANGED` | Upstream GNN architecture with 567,060 parameters |
-| **Package Core** | `proteinsolver/utils/protein_design.py` | `PRESERVED_UNCHANGED` | `design_sequence()` iterative CSP algorithm |
-| **Package Core** | `proteinsolver/datasets/protein.py` | `PRESERVED_UNCHANGED` | Data transformation and graph attribute generation |
-| **Package Core** | `proteinsolver/datasets/sudoku.py` | `PRESERVED_UNCHANGED` | Sudoku CSP dataset and tensor converter |
-| **Upstream Checkpoint** | `data/e53-s1952148-d93703104.state` | `FUNCTIONALLY_VERIFIED` | 2.27 MB state-dict, SHA-256 `1E8272F0...` validated |
-| **Upstream Structure** | `data/inputs/1n5uA03.pdb` | `FUNCTIONALLY_VERIFIED` | 92-residue reference crystal domain (IDs 205..296) |
-| **Upstream Legacy** | `proteinsolver/utils/protein_structure.py` | `COMPATIBILITY_ADAPTED` | Depended on dead `kmbio`/`kmtools`; bridged by `compat/structure.py` |
-| **Upstream Tests** | `tests/nn/test_functional.py` | `FUNCTIONALLY_VERIFIED` | Sparse multi-head attention forward test passes |
-| **Upstream Tests** | `tests/utils/test_sudoku.py` | `FUNCTIONALLY_VERIFIED` | All 8 Sudoku validation parameterizations pass |
-| **Notebooks** | `notebooks/protein_demo/` | `WRAPPED_BY_APPLICATION` | Notebook workflow realized in interactive Web UI |
-| **Notebooks** | `notebooks/sudoku_demo/` | `DOCUMENTED_CLI` | Retained as reproducible CLI/notebook workflow |
-| **Legacy Scoring** | `notebooks/16_david_analysis/` | `EXTERNAL_DEPENDENCY` | Requires proprietary PyRosetta and Quark licenses |
+| 1 | `ProteinNet` Core GNN Model | `PRESERVED_UNCHANGED` | Packaged in `proteinsolver/models/proteinnet.py`, wrapped by `compat/checkpoint.py` |
+| 2 | EdgeConv GNN Modules | `PRESERVED_UNCHANGED` | `proteinsolver/nn/` EdgeConv modules executed natively |
+| 3 | Functional/Activation Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/nn/test_functional.py` |
+| 4 | Protein Datasets & Transforms | `PRESERVED_UNCHANGED` | `proteinsolver/datasets/protein.py` preserved |
+| 5 | Sudoku Datasets & Utilities | `PRESERVED_UNCHANGED` | Tested in `tests/utils/test_sudoku.py` (8 parameterized tests) |
+| 6 | N-Queens Dataset & Utilities | `CLI/NOTEBOOK_RETAINED` | Retained in `proteinsolver/datasets/` for research exploration |
+| 7 | Graph-Labeling Utilities | `CLI/NOTEBOOK_RETAINED` | Retained in `proteinsolver/datasets/` |
+| 8 | Protein Design Iterative CSP | `PRESERVED_UNCHANGED` | `proteinsolver.utils.protein_design.design_sequence` wrapped by `compat/inference.py` |
+| 9 | Protein Demo Notebook | `APPLICATION_WRAPPED` | Modernized into interactive FastAPI + React application |
+| 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Retained for reference |
+| 11 | Sudoku Demo | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
+| 12 | Sudoku Analysis | `CLI/NOTEBOOK_RETAINED` | Retained for reference |
+| 13 | Training Workflows | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Documented in `docs/KNOWN_LIMITATIONS.md`; modern PyTorch DDP recommended |
+| 14 | Validation Workflows | `APPLICATION_WRAPPED` | Single-target diagnostic evaluation integrated in application |
+| 15 | Model Scoring Utilities | `PRESERVED_UNCHANGED` | Retained in `proteinsolver/utils/` |
+| 16 | Pretrained Checkpoint Workflow | `COMPATIBILITY_ADAPTED` | Layer key adaptation in `compat/checkpoint.py` |
+| 17 | External Training Dataset Workflow | `EXTERNAL_DEPENDENCY` | Requires multi-GB external data; documented |
+| 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Dockerfile retained; local venv standardized |
+| 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy binder files retained |
+| 20 | Original Unit Tests | `PRESERVED_UNCHANGED` | All 11 compatible upstream tests pass in test suite |
+| 21 | Scripts / C Utilities | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Historical C helper files preserved in repo |
+| 22 | Legacy CI Configuration | `COMPATIBILITY_ADAPTED` | GitLab CI superseded by GitHub Actions (`.github/workflows/ci.yml`) |
 
 ---
 
-## 4. Modern Compatibility Solutions (`compat/`)
+## 5. Compatibility Layer Forensics (7 Issues Resolved)
 
-Across audits, six historical compatibility problems were identified and cleanly resolved:
+The compatibility layer (`compat/`) resolves exactly **7** distinct historical incompatibilities without modifying the upstream scientific package:
 
-1. **Windows POSIX `fcntl` Incompatibility:**
-   - *Problem:* Upstream modules unconditionally import Unix-only `fcntl` for file locks, crashing on Windows.
-   - *Solution:* `compat/shims.py` registers an in-memory `fcntl` module defining `flock`, `lockf`, `fcntl`, and `LOCK_*` constants as safe no-ops.
-2. **Obsolete `kmbio` / `kmtools` Dependencies:**
-   - *Problem:* 2018–2019 packages fail to build on Python 3.11.
-   - *Solution:* Stubs registered in `sys.modules`; cleanroom BioPython PDB parser in `compat/structure.py` extracts heavy-atom coordinates and generates $< 12.0$ Å distance matrices without legacy C-extensions.
-3. **PyG 2.x `scatter_` API Removal:**
-   - *Problem:* PyG 2.x removed `torch_geometric.utils.scatter_` in favor of functional scatter ops.
-   - *Solution:* Backward-compatible shim routes `scatter_(name, src, index, out=out, ...)` to `torch_scatter.scatter` updating `out` in place.
-4. **`ruamel.yaml` 0.18+ Deprecation:**
-   - *Problem:* Upstream Sudoku test called removed `yaml.safe_load(...)`.
-   - *Solution:* `compat/shims.py` transparently routes `ruamel.yaml.safe_load` to `YAML(typ='safe', pure=True).load`.
-5. **Checkpoint State-Dict Key Mapping:**
-   - *Problem:* Published checkpoint keys use training-run names (`graph_conv_0.`) whereas packaged `ProteinNet` expects `graph_conv_1.`.
-   - *Solution:* `compat/checkpoint.py` maps prefixes deterministically, validating all 567,060 parameters with zero missing/unexpected keys.
-6. **PyTorch 2.6 Cross-Device Indexing:**
-   - *Problem:* Boolean tensor indexing in `proteinsolver.utils.protein_design.design_sequence` fails on CUDA in PyTorch 2.6.
-   - *Solution:* Standardized inference on CPU (`device="cpu"`), completing a 92-residue domain in ~1.52 seconds without touching upstream code.
+1. **Windows POSIX `fcntl` stub (`compat/shims.py`):**  
+   POSIX file locking is absent on Windows. Shims create a dummy `fcntl` module with standard constants (`LOCK_EX`, `LOCK_SH`, `LOCK_UN`, `LOCK_NB`). To prevent silent race conditions, `fcntl.flock` and `fcntl.lockf` explicitly raise `NotImplementedError` rather than pretending locking succeeded.
+2. **Cleanroom BioPython Structure Parser (`compat/structure.py`):**  
+   The legacy `kmbio` / `kmtools` dependencies are abandoned. A modern BioPython-based parser computes heavy-atom inter-residue distance matrices ($r < 12.0$ Å), extracts coordinates, builds PyG edge indices, and determines edge attributes.
+3. **PyTorch Geometric 2.x `scatter_` In-Place Shim (`compat/shims.py`):**  
+   The in-place `torch_geometric.utils.scatter_` operator was removed in PyG 2.x. A shim intercepts calls and delegates to `torch_scatter.scatter(src, index, dim=dim, out=out, reduce=reduce)`.
+4. **PyG Data & Batch Collation Adaptation (`compat/inference.py`):**  
+   Modern PyG 2.8 `Batch.from_data_list` requires uniform tensor keys and handles slicing differently from PyG 1.x. The adapter ensures homogeneous tensor dictionaries prior to collation.
+5. **Checkpoint State-Dict Layer Key Mapping (`compat/checkpoint.py`):**  
+   The published checkpoint (`e53-s1952148-d93703104.state`) uses training-time keys (`graph_conv_0.`) whereas packaged `ProteinNet` defines `graph_conv_1.`. The loader deterministically maps keys and validates that all 567,060 parameters load with 0 missing and 0 unexpected keys.
+6. **PyTorch 2.6 Cross-Device Indexing Standardization (`compat/inference.py`):**  
+   Iterative CSP sequence design performs sequential scalar index assignments (`data.x[best_idx] = best_val`). Under PyTorch 2.6 on CUDA, scalar cross-device indexing triggers asynchronous device-side assert errors. The compatibility inference engine standardizes design execution to CPU.
+7. **`ruamel.yaml` 0.18+ API Migration (`compat/shims.py`):**  
+   Replaced deprecated `ruamel.yaml.safe_load(...)` with `YAML(typ='safe', pure=True).load`.
 
 ---
 
-## 5. Strict Native Sequence Leak Protection (Lesson C Invariant)
+## 6. Model Architecture & Checkpoint Facts
 
-To permanently guard against the historical diagnostic vulnerability:
-- **Design Mode Invariant:**
-  - `data.x` is initialized strictly to mask token `20` for all residues.
-  - `data.y` is deleted/stripped from the PyG batch.
-  - No ground-truth sequence is accepted or consumed by `/api/design`.
-- **Diagnostic Mode Segregation:**
-  - Native sequence identity comparison is isolated to `/api/diagnostic`.
-  - Prominent UI and API disclaimers explicitly label it as a single-target integration check, not a generalized benchmark.
-- **Automated Regression Tests:**
-  - `test_leak_regression_data_structure`: Asserts `getattr(batch, 'y', None) is None` and `(batch.x == 20).all()`.
-  - `test_design_ignores_native_sequence`: Verifies design runs on unlabelled input.
+Empirical verification from the checkpoint tensors and model code confirms:
 
----
-
-## 6. Applications Architecture
-
-### Backend (`apps/backend/`)
-- **Framework:** FastAPI 0.115.11, Pydantic 2.10.6, Uvicorn 0.34.0.
-- **Endpoints:**
-  - `GET /api/health`: System health, Python/PyTorch versions, CUDA status, active device, parameter count.
-  - `GET /api/model`: Model metadata (ProteinNet, 4-block EdgeConv GNN, 567,060 params, SHA-256).
-  - `GET /api/examples`: Lists available 1-click fixtures (`1n5uA03`).
-  - `GET /api/examples/{id}`: Returns raw PDB coordinate text.
-  - `POST /api/validate`: Validates PDB structure, detects chains, extracts residue numbers.
-  - `POST /api/design`: Executes real ProteinSolver inverse folding (greedy MAP or multinomial sampling).
-  - `POST /api/diagnostic`: Runs design + segregated native sequence recovery calculation.
-
-### Frontend (`apps/frontend/`)
-- **Framework:** React 19, TypeScript 5.9, Vite 8.3.1.
-- **Styling:** Premium dark glassmorphism design system (`#0a0e17` background, cyan/emerald accents, Outfit & JetBrains Mono typography).
-- **Features:**
-  - Header with live backend connection badge and device/parameter display.
-  - 1-Click fixture selector (`1n5uA03` pre-configured).
-  - Custom PDB file upload with client-side validation.
-  - Mode toggle: **✨ Inverse Folding Design** vs. **📊 Diagnostic Evaluation**.
-  - Interactive residue confidence heatmap with hover tooltips (High $\ge 70\%$, Moderate $40-69\%$, Low $< 40\%$).
-  - FASTA sequence copy and download utilities.
-  - Full Upstream Provenance Modal reviewing author attribution, MIT license, and compatibility innovations.
+- **Model Class Name:** `ProteinNet`
+- **Application Product Name:** `ProteinSolver`
+- **Architecture:** 4-block EdgeConv Residual Graph Neural Network
+- **Embedding Dimensions:**
+  - `embed_x`: `(21, 128)` — 20 standard amino acids + 1 mask token (token 20) mapped to **128-dimensional** node embeddings.
+  - `embed_adj`: `(128, 2)` — Edge distance and direction attributes mapped to **128-dimensional** edge embeddings.
+  - `graph_conv` blocks: 4 sequential residual blocks with EdgeConv message-passing and batch normalization.
+  - `linear_out`: `(20, 128)` — Final linear projection from **128-dimensional** hidden representations to 20 amino acid logits.
+- **Exact Parameter Count:** **567,060** parameters (empirical count: 567,060; state-dict tensors: 567,060).
+- **Checkpoint File:** `data/e53-s1952148-d93703104.state` (2,274,321 bytes)
+- **Checkpoint SHA-256:** `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
 
 ---
 
-## 7. Verification Evidence Summary
+## 7. Native-Sequence Leak Protection
 
-### Automated Test Suite
-Run via `pytest tests/ -v`:
-- **Total Tests:** 32
-- **Passed:** 32 (100%)
-- **Failed:** 0
-- **Duration:** 12.06 seconds
-- **Suites:**
-  1. `tests/nn/test_functional.py`: 1 test passed (upstream attention mechanism).
-  2. `tests/test_all_masked_design.py`: 2 tests passed (MAP greedy design, multinomial determinism).
-  3. `tests/test_attributes.py`: 2 tests passed (version and package attributes).
-  4. `tests/test_backend_api.py`: 8 tests passed (health, model, examples, validate, design, diagnostic).
-  5. `tests/test_compat_shims.py`: 3 tests passed (fcntl, kmtools, pyg scatter_).
-  6. `tests/test_compat_structure.py`: 2 tests passed (chain info, BioPython contact matrix).
-  7. `tests/test_integration_1n5u.py`: 1 test passed (41.30% baseline reproduction).
-  8. `tests/test_leak_regression.py`: 2 tests passed (zero-leak invariants).
-  9. `tests/test_model_checkpoint.py`: 3 tests passed (SHA-256, 567,060 params, forward pass).
-  10. `tests/utils/test_sudoku.py`: 8 tests passed (Sudoku CSP tensor conversions).
-
-### Functional Baseline Reproduction
-- Target: `1n5uA03` (Chain A, 92 residues, IDs 205..296)
-- Checkpoint: `data/e53-s1952148-d93703104.state` (SHA-256 `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`)
-- Strategy: Argmax (Greedy MAP), Temperature 1.0
-- Inference Time: **1.52 seconds**
-- Generated Sequence: `MAGLDAFLAEAVARLSARFPGASAAELARLTALETLTRLCCAAGDAASCAACRARLAAYVCANQALLTADLAACCALPAAAIAACLAAVRRR`
-- Matches: 38 / 92 residues
-- Identity: **41.30%** (Exact mathematical reproduction of verified baseline)
-
-### Clean-Clone Verification
-Executed via `scratch/run_clean_clone_test.py`:
-- Cloned to temporary directory: `C:\Users\Dheeraj\AppData\Local\Temp\ps_clean_clone_w1n1mr31` (2.22s)
-- Checked out `feature/milestone-1-full-implementation`
-- Validated all 32 tests passed in clone (17.47s, exit code 0)
-- Validated `npm run build` compiled `dist/index.html` (exit code 0)
-- Cleaned up temp directory without residual leaks
-
-### Mentor Demonstration Walkthrough
-Executed via `scratch/run_mentor_demo_verification.py`:
-- All 6 phases completed with `[SUCCESS]` in 2.06s roundtrip.
+- **Invariant:** During design mode, `data.x` is initialized with mask token 20 for all residues, `data.y` is explicitly set to `None`, and the design endpoint strictly rejects any reference sequence input.
+- **Verification:** Tested in `tests/test_leak_regression.py`.
+- **Diagnostic Separation:** The native sequence is only accepted by the separate `/api/diagnostic` endpoint for retrospective sequence identity computation.
 
 ---
 
-## 8. Teammate Governance & GitHub State
+## 8. Single-Target Integration Result
 
-- **GitHub Organization:** `ProteinDesignRND`
-- **Repository:** `ProteinDesignRND/ProteinSolver`
-- **Team Access:** Team `ProteinDesign-Team` configured with write (push) access.
-- **Branch Protection Ruleset:** `main-protection` active on `main`:
-  - Enforce linear history: YES
-  - Require pull request: YES (1 approval)
-  - Require signed commits: YES
-  - Block force pushes: YES
-  - Block branch deletion: YES
-  - Admin bypass: Limited to Dheeraj (PR mode only)
-- **Active Pull Request:**
-  - URL: `https://github.com/ProteinDesignRND/ProteinSolver/pull/1`
-  - Base: `main`
-  - Head: `feature/milestone-1-full-implementation`
-  - Commit SHA: `ade2b28`
-  - CI Workflow: `.github/workflows/ci.yml`
+- **Target Structure:** `1n5uA03` (CATH domain from PDB 1N5U, Chain A, 92 amino acids).
+- **Execution Mode:** All-masked MAP greedy inverse folding on CPU.
+- **Result:** **38 / 92 residues** match the native sequence (**41.30% native sequence identity**).
+- **Runtime:** ~1.52 seconds.
+- **Characterization:** This is a *previously validated single-target all-masked integration result* confirming algorithmic correctness of the local reproduction. It is NOT claimed to be a generalized benchmark or published MAP baseline across folds.
 
 ---
 
-## 9. Mentor Demonstration Quickstart
+## 9. Genuine Isolated Clean-Clone Verification
 
-To run the live mentor demo from scratch:
+To satisfy Lesson 6, clean-clone validation was executed in a brand-new, isolated temporary directory (`ps_clean_clone_usg7p8ge`) using an independent Python 3.11 virtual environment created via `uv` with zero cross-repository sys.path contamination:
 
-```bash
-# 1. Clone repository
-git clone https://github.com/ProteinDesignRND/ProteinSolver.git
-cd ProteinSolver
-git checkout feature/milestone-1-full-implementation
-
-# 2. Terminal A: Launch FastAPI Backend
-python -m apps.backend.main
-# Backend runs at: http://127.0.0.1:8000
-# OpenAPI Docs: http://127.0.0.1:8000/docs
-
-# 3. Terminal B: Launch React Frontend
-cd apps/frontend
-npm run dev
-# Frontend runs at: http://localhost:5173
-```
-
-1. Open `http://localhost:5173`.
-2. Observe `Model Ready (567,060 params) | CPU` in header.
-3. Click `1n5uA03` 1-click fixture (loads Chain A, 92 AA).
-4. Click `🚀 Run ProteinSolver Design` (generates full sequence in ~1.5s with per-residue confidence heatmap).
-5. Switch to `📊 Diagnostic Evaluation` and run again (demonstrates exact 41.30% recovery match).
-6. Click `📖 Upstream Provenance` to display historical lineage and MIT license.
+1. Cloned feature branch `feature/milestone-1-full-implementation` (commit `5ee17c9`).
+2. Verified cloned working tree clean.
+3. Created isolated virtual environment `.venv` using Python 3.11.9.
+4. Verified `sys.path` contained 0 references to `Protein Design` or any other project directory.
+5. Installed dependencies from pinned `requirements.txt`.
+6. Installed `ProteinSolver` in editable mode with `--no-deps`.
+7. In `apps/frontend/`, executed `npm ci` and `npm run build` (build completed in 316ms, 0 errors).
+8. Executed full test suite: **32 passed in 15.99s** (0 failed).
+9. Executed independent inference verification on `1n5uA03`:
+   `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Elapsed=2.07s`.
+10. Temporary directory cleaned up.
 
 ---
 
-## 10. Research Firewall & Next Steps
+## 10. Automated Test Suite Summary
 
-### Strict Boundary Affirmation
-- The research repository (`ProteinDesignRND/ProteinDesign`) was NOT altered.
-- Historical copy `external/proteinsolver-original` remains untouched at `69ef0965a3fc3bf191804035b539720a06e58ba6`.
-- E1 benchmark candidate generation has NOT been started.
-- TS50 benchmark evaluation has NOT been run.
-- ProteinMPNN comparative experiments remain completely quarantined for the research phase.
+The automated test suite contains **32 tests** across 8 test modules:
 
-### Immediate Action for Human Reviewer
-Human approval and squash-merge of Pull Request [#1](https://github.com/ProteinDesignRND/ProteinSolver/pull/1) on GitHub to finalize Milestone 1 on `main`.
+| Test Module | Tests | Focus Area | Status |
+| :--- | :--- | :--- | :--- |
+| `tests/nn/test_functional.py` | 1 | Upstream Sparse Multi-Head Attention forward pass | **PASSED** |
+| `tests/test_attributes.py` | 2 | Upstream package attributes (`__version__`, `__main__`) | **PASSED** |
+| `tests/utils/test_sudoku.py` | 8 | Upstream Sudoku puzzle validation (solved & invalid) | **PASSED** |
+| `tests/test_compat_shims.py` | 3 | Windows `fcntl` fail-loud stub, `kmtools` stub, PyG `scatter_` shim | **PASSED** |
+| `tests/test_compat_structure.py` | 2 | BioPython structure parsing, chain selection, contact graph | **PASSED** |
+| `tests/test_model_checkpoint.py` | 3 | Checkpoint SHA-256, 567,060 parameter count, forward pass | **PASSED** |
+| `tests/test_all_masked_design.py` | 2 | Deterministic greedy MAP design, stochastic seed determinism | **PASSED** |
+| `tests/test_leak_regression.py` | 2 | Design-path zero-leakage invariant, reference sequence immunity | **PASSED** |
+| `tests/test_backend_api.py` | 8 | Health, exact model metadata, examples, validation, design, diagnostic | **PASSED** |
+| `tests/test_integration_1n5u.py` | 1 | Single-target all-masked integration reproduction (41.30% recovery) | **PASSED** |
+| **Total** | **32** | **Full automated coverage** | **32 PASSED (0 failed)** |
+
+---
+
+## 11. Application Architecture & Verification
+
+- **Backend:** FastAPI service in `apps/backend/`. Unweakened API contract verified: `model_name="ProteinSolver"`, `model_class="ProteinNet"`, `architecture="4-block EdgeConv Residual GNN"`.
+- **Frontend:** React 19 + TypeScript + Vite interactive dark-mode interface in `apps/frontend/`. Built with `tsc -b && vite build`.
+- **Confidence Visualization:** Confidence bands in the UI (High $\ge$ 70%, Moderate 40–69%, Low < 40%) are documented strictly as **display-only visualization bands** representing uncalibrated model selection probabilities.
+- **Browser Automation Classification:**
+  - `FRONTEND_BUILD_VERIFIED`: Built via Vite with 0 TypeScript/bundling errors.
+  - `BACKEND_INTEGRATION_VERIFIED`: All 8 REST endpoints verified via FastAPI TestClient.
+  - `BROWSER_E2E_NOT_AUTOMATED`: Automated headless browser binaries are not installed in the local environment; interactive browser execution is performed via manual mentor demo workflow.
+
+---
+
+## 12. Scientific Firewall Confirmation
+
+The scientific research repository `ProteinDesignRND/ProteinDesign` remains **100% untouched**:
+- 0 candidate sequences generated for scientific experiments.
+- 0 benchmark runs (no E1, no TS50, no ProteinMPNN evaluations).
+- 0 ESMFold or AlphaFold2 folding evaluations.
+- Historical reference clone at `external/proteinsolver-original` remains frozen at commit `69ef0965`.
+
+---
+
+## 13. Known Limitations
+
+As documented in `docs/KNOWN_LIMITATIONS.md`:
+1. **CPU Inference Default:** Iterative CSP sequence generation is standardized to CPU in the compatibility layer to prevent PyTorch 2.6 CUDA scalar indexing asserts.
+2. **POSIX File Locking:** POSIX `fcntl` file locking is unsupported on Windows; calls raise `NotImplementedError`.
+3. **Legacy RCSB/PDB Fetcher Retired:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
+4. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model probabilities and should not be used as biological thresholds.
+
+---
+
+## 14. Governance & Human Merge Requirement
+
+- **Pull Request:** [ProteinDesignRND/ProteinSolver PR #1](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
+- **Branch Protection:** Active ruleset requires 1 approving review, squash merge, linear history, and signed commits.
+- **Human Merge Gate:** In accordance with Lesson 20 and Lesson 23, PR #1 has NOT been autonomously merged. Human review and approval remain required.
+- **Post-Merge Transition:** Once PR #1 is approved and merged into `main` by a human reviewer, the repository will be classified as `MILESTONE_1_READY_FOR_MENTOR_DEMO`.
+
+---
+
+## 15. Conclusion & Verification Summary
+
+| Gate / Requirement | Requirement Standard | Verified Status |
+| :--- | :--- | :--- |
+| **Upstream Lineage** | Fork acquisition HEAD & scientific reference commit explicit | **VERIFIED** (`69ef0965`) |
+| **File Integrity** | Upstream package source frozen; only legitimate changes | **VERIFIED** (0 files in `proteinsolver/` modified) |
+| **Parity Matrix** | 22 upstream capabilities accounted for honestly | **VERIFIED** (`docs/ORIGINAL_PROJECT_PARITY.md`) |
+| **Compatibility Layer** | Exactly 7 issues addressed without silent failures | **VERIFIED** (7 issues resolved & tested) |
+| **Model Facts** | Hidden dim = 128, parameters = 567,060 | **VERIFIED** (Empirical & checkpoint match) |
+| **Native Leak Invariant** | Mask token 20, y=None, design rejects native sequence | **VERIFIED** (Regression tested) |
+| **Result Language** | Single-target 41.30% integration result (not benchmark) | **VERIFIED** (Calibrated everywhere) |
+| **Test Suite** | Full suite passes without weakened assertions | **VERIFIED** (32/32 passed in 13.54s) |
+| **Frontend Build** | TypeScript compilation and Vite build pass | **VERIFIED** (Built in 127ms / 316ms) |
+| **Clean Clone** | Brand-new isolated environment with 0 cross-repo deps | **VERIFIED** (100% passed in `ps_clean_clone_usg7p8ge`) |
+| **Research Firewall** | `ProteinDesign` research repository untouched | **VERIFIED** (100% clean) |
+| **Governance** | PR #1 open, human review required | **VERIFIED** (`PENDING_HUMAN_MERGE`) |
