@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 def read_md(file):
-    with open(file) as fin:
+    with open(file, encoding="utf-8", errors="replace") as fin:
         return fin.read()
 
 

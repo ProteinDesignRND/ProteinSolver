@@ -18,7 +18,8 @@ class HealthResponse(BaseModel):
 
 
 class ModelResponse(BaseModel):
-    model_name: str = "ProteinNet"
+    model_name: str = "ProteinSolver"
+    model_class: str = "ProteinNet"
     architecture: str = "4-block EdgeConv Residual GNN"
     parameter_count: int = 567060
     input_node_features: int = 21  # 20 amino acids + 1 mask token

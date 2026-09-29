@@ -1,21 +1,7 @@
-# Known Limitations & Technical Boundaries
+# Known Limitations & Scientific Boundaries
 
-**Document:** `docs/KNOWN_LIMITATIONS.md`  
-**Repository:** `ProteinDesignRND/ProteinSolver`  
-
----
-
-## 1. Single-Target vs General Benchmark Boundary
-- On target 1n5uA03, valid all-masked inverse folding achieves 41.30% native sequence recovery.
-- **Boundary:** This recovery metric is a single-target runtime and mathematical integration check. It is **NOT** a generalization benchmark across diverse protein folds.
-
-## 2. Historical Training Set Membership
-- Historical ProteinSolver training Parquet corpora (72 million structures) were hosted on external HPC clusters and are not included in Git metadata.
-- Therefore, training set membership for specific benchmark targets cannot be verified from accessible metadata. Targets are classified as `NOT VERIFIABLE FROM ACCESSIBLE METADATA`.
-
-## 3. Iterative CSP Execution Device
-- Iterative CSP design (`design_sequence()`) is executed on CPU because modern PyTorch 2.6 restricts cross-device tensor indexing on CUDA.
-- **Impact:** CPU inference takes ~1.7 seconds for 92 AA, which is fast enough for interactive web use without requiring invasive modifications to historical source code.
-
-## 4. Upstream Rosetta / Modeller Utilities
-- `proteinsolver.utils.model_scoring` contains legacy wrappers for Rosetta and Modeller, which require external commercial/proprietary licenses and installations not provided in this repository.
+1. **Single-Target Integration Check vs. Benchmark:** Target `1n5uA03` (92 AA) is an integration sanity fixture. Its 41.30% recovery (38/92 residues) reproduces the project's previously validated single-target integration result. It is NOT a generalized benchmark or proof of multi-target recovery across protein folds. Systematic benchmarking is reserved exclusively for the research repository (`ProteinDesignRND/ProteinDesign`).
+2. **Display-Only Confidence Heatmap:** In the frontend, per-residue confidence color bands (green $\ge 70\%$, amber $40-69\%$, rose $< 40\%$) reflect the raw softmax model selection probability. They are display visualization bands, not calibrated biological probabilities.
+3. **CPU Constraint Satisfaction Execution:** Due to cross-device boolean indexing assertions introduced in PyTorch 2.6, iterative CSP design is executed on CPU (`device="cpu"`). CPU runtime is ~1.5s for 92 residues.
+4. **External Proprietary Dependencies:** Upstream scoring scripts in `notebooks/16_david_analysis/` require external licensed installations of PyRosetta and Quark.
+5. **External Training Shards:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference.

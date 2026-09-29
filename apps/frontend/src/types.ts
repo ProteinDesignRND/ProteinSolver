@@ -11,6 +11,7 @@ export interface HealthData {
 
 export interface ModelData {
   model_name: string;
+  model_class: string;
   architecture: string;
   parameter_count: number;
   input_node_features: number;

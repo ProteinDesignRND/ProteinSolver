@@ -1,67 +1,20 @@
-# Application Architecture & Technical Design
+# System Architecture Specification
 
-**Document:** `docs/ARCHITECTURE.md`  
-**Repository:** `ProteinDesignRND/ProteinSolver`  
+## 1. Overview
+ProteinSolver Milestone 1 is a layered inverse protein design suite executing on modern Python 3.11, PyTorch 2.6, and PyG 2.8.
 
----
+## 2. Model Architecture Facts
+- **Architecture Name:** `ProteinNet`
+- **Class Implementation:** `proteinsolver.models.proteinnet.ProteinNet`
+- **GNN Structure:** 4 sequential `EdgeConv` residual blocks
+- **Node Input Dimensionality:** 21 (20 standard amino acids + 1 mask token `20`)
+- **Edge Input Dimensionality:** 2 (minimum heavy-atom distance in Å + sequence separation probability)
+- **Hidden Embedding Dimensionality:** **128** (empirically validated from weight tensors; NOT 162)
+- **Output Dimensionality:** 20 (logits over standard amino acids)
+- **Total Validated Parameters:** Exactly **567,060**
+- **Checkpoint Checksum:** SHA-256 `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
 
-## 1. System Overview
-
-ProteinSolver Milestone 1 provides a clean, modular, production-grade application architecture around the original ProteinSolver GNN core:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    REACT FRONTEND (Vite)                    │
-│   - Structure Upload (.pdb / .cif)                          │
-│   - 1-Click Example Loader (1n5uA03, 3fndA02, etc.)         │
-│   - Parameter Config (Strategy, Temperature, Seed)          │
-│   - Sequence Viewer with Per-Residue Confidence Tiles       │
-│   - FASTA & JSON Export                                     │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ REST HTTP (JSON / multipart)
-┌──────────────────────────────▼──────────────────────────────┐
-│                    FASTAPI BACKEND                          │
-│   - GET  /api/health       (status, hardware, versions)     │
-│   - GET  /api/model        (params, checkpoint metadata)    │
-│   - GET  /api/examples     (built-in structure fixtures)    │
-│   - POST /api/validate     (PDB validation, chain parsing)  │
-│   - POST /api/design       (real all-masked CSP design)     │
-│   - POST /api/diagnostic   (native sequence recovery check) │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ Python API
-┌──────────────────────────────▼──────────────────────────────┐
-│                  COMPATIBILITY LAYER (compat/)              │
-│   - Shims: fcntl, kmtools, torch_geometric.utils.scatter_   │
-│   - Structure: BioPython PDB parser -> ProteinData graph    │
-│   - Checkpoint: State-dict key translation & validation     │
-│   - Inference Engine: Mode enforcement, seed reproducibility│
-└──────────────────────────────┬──────────────────────────────┘
-                               │ Unmodified calls
-┌──────────────────────────────▼──────────────────────────────┐
-│                ORIGINAL UPSTREAM PROTEINSOLVER              │
-│   - ProteinNet (4-block EdgeConv GNN, 567,060 parameters)   │
-│   - row_to_data -> transform_edge_attr                      │
-│   - design_sequence (iterative CSP sequence generator)      │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 2. Component Specifications
-
-### 2.1 Backend (`apps/backend/`)
-- **Framework:** FastAPI with Uvicorn server and Pydantic schemas.
-- **Design Mode Security:** Strictly enforces all-masked inverse folding (`data.x = 20`, `data.y = None`). The backend API refuses to accept native sequence labels into the design path, guaranteeing 0 information leakage.
-- **Error Handling:** Structured HTTP exceptions with clean error messages; no raw stack traces exposed to client.
-
-### 2.2 Frontend (`apps/frontend/`)
-- **Framework:** React 19 + TypeScript + Vite.
-- **Styling:** Curated modern CSS with responsive glassmorphism aesthetic, dark mode styling, and accessible contrast.
-- **Visuals:** Sequence display with color-coded confidence indicators:
-  - High confidence ($\ge 0.70$): Emerald
-  - Moderate confidence ($0.40 - 0.69$): Amber
-  - Low confidence ($< 0.40$): Rose
-
-### 2.3 Compatibility Layer (`compat/`)
-- Modular package providing pure caller-side adapters.
-- Zero monkeypatches inside application endpoints.
+## 3. Communication Protocol
+- **Transport Format:** JSON payload (`Content-Type: application/json`).
+- Structure text is transmitted as raw PDB string within `{"pdb_content": "..."}`.
+- Multipart form encoding is not used.

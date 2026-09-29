@@ -11,9 +11,11 @@ def test_fcntl_stub():
     assert hasattr(fcntl, "LOCK_SH")
     assert hasattr(fcntl, "LOCK_UN")
     assert hasattr(fcntl, "LOCK_NB")
-    # Calling flock/lockf should be safe no-ops
-    fcntl.flock(0, fcntl.LOCK_EX)
-    fcntl.lockf(0, fcntl.LOCK_EX)
+    # Calling flock/lockf on Windows fails loudly rather than pretending locking works
+    with pytest.raises(NotImplementedError):
+        fcntl.flock(0, fcntl.LOCK_EX)
+    with pytest.raises(NotImplementedError):
+        fcntl.lockf(0, fcntl.LOCK_EX)
 
 def test_kmtools_stub():
     from kmtools import structure_tools

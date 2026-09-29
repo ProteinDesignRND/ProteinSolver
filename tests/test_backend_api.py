@@ -16,7 +16,8 @@ def test_api_model():
     res = client.get("/api/model")
     assert res.status_code == 200
     data = res.json()
-    assert data["model_name"] == "ProteinNet"
+    assert data["model_name"] == "ProteinSolver"
+    assert data["model_class"] == "ProteinNet"
     assert data["architecture"] == "4-block EdgeConv Residual GNN"
     assert data["checkpoint_loaded"] is True
     assert data["parameter_count"] == 567060

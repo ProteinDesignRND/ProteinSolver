@@ -72,7 +72,8 @@ class ProteinSolverService:
 
     def get_model_info(self) -> ModelResponse:
         return ModelResponse(
-            model_name="ProteinNet",
+            model_name="ProteinSolver",
+            model_class="ProteinNet",
             architecture="4-block EdgeConv Residual GNN",
             parameter_count=EXPECTED_PARAMS,
             input_node_features=21,

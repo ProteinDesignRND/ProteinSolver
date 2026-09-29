@@ -15,13 +15,15 @@ def _scatter_(name, src, index, out=None, dim=0, dim_size=None):
 
 def apply_shims() -> None:
     """Apply transparent compatibility shims if not already present."""
-    # 1. fcntl dummy module with attributes for Windows
+    # 1. fcntl dummy module for Windows
+    # Fails loudly on locking operations rather than silently pretending locks exist
     if "fcntl" not in sys.modules:
         sys.modules["fcntl"] = types.ModuleType("fcntl")
     fcntl_mod = sys.modules["fcntl"]
+    def _unsupported_locking(*args, **kwargs):
+        raise NotImplementedError("POSIX file locking (fcntl) is not supported on Windows. Avoid concurrent file mutation.")
     for fn in ["flock", "lockf", "fcntl"]:
-        if not hasattr(fcntl_mod, fn):
-            setattr(fcntl_mod, fn, lambda *args, **kwargs: None)
+        setattr(fcntl_mod, fn, _unsupported_locking)
     fcntl_mod.LOCK_EX = getattr(fcntl_mod, "LOCK_EX", 2)
     fcntl_mod.LOCK_SH = getattr(fcntl_mod, "LOCK_SH", 1)
     fcntl_mod.LOCK_NB = getattr(fcntl_mod, "LOCK_NB", 4)
