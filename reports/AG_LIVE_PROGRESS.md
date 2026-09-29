@@ -16,11 +16,11 @@
 | Stage | Status | Verification & Artifact Details |
 | :--- | :---: | :--- |
 | **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and clean working tree. |
-| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, live GitHub CI run 36625875281 green (2/2 jobs succeeded). Research repo and upstream reference clone verified clean. |
+| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, live GitHub CI run 36627132189 green (2/2 jobs succeeded; earlier run 36625875281 verified). Research repo and upstream reference clone verified clean. |
 | **STAGE_2_RESIDUAL_DOCUMENTATION_AUDIT** | **COMPLETE** | Audited active documents for commit-binding clarity, training shard phrasing, self-referential commit claims, and limitation references. |
 | **STAGE_3_DURABLE_RULE_INTEGRITY** | **COMPLETE** | Preserved canonical Lessons 21–24 in `AGENT_RULES_AND_LESSONS.md`; added Lesson 25 defining epistemic classification for research-scoped benchmark protocols (`OUT_OF_SCOPE_RESEARCH`). |
 | **STAGE_4_TAXONOMY_RECONCILIATION** | **COMPLETE** | Reconciled disposition categories and verification statuses into orthogonal dimensions across `docs/ORIGINAL_PROJECT_INVENTORY.md`, `docs/ORIGINAL_PROJECT_PARITY.md`, and `reports/MILESTONE_1_FINAL_REPORT.md`. |
-| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, updated CI run references (`36625875281`), and confirmed absence of self-referential commit hashes in committed documents. |
+| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, synchronized current CI run reference to 36627132189, and confirmed absence of self-referential commit hashes in committed documents. |
 | **STAGE_6_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |
 | **STAGE_7_FINAL_GOVERNANCE_CHECK** | **COMPLETE** | Verified PR #1 remains OPEN targeting `main` pending human review and approval; state `PENDING_HUMAN_MERGE`. |
 
@@ -28,5 +28,6 @@
 
 ## 2. Verified Invariants
 - **Upstream Lineage:** Fork acquisition HEAD and scientific reference commit are both `69ef0965a3fc3bf191804035b539720a06e58ba6`.
+- **Technical Scope:** The ProteinNet model/application path, seven compatibility adaptations, FastAPI backend, React frontend, and automated verification suite are functionally verified, subject to the documented limitations. Upstream N-Queens and Graph-Labeling placeholder stubs remain strictly `NOT_FUNCTIONALLY_VERIFIED`.
 - **Zero Active Document Overwrites:** No active report, document, or test in ProteinSolver was improperly overwritten.
 - **Source Protection:** The `ProteinDesign` research repository working tree remains clean and no research experiments were performed.

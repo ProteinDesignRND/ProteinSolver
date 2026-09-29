@@ -17,7 +17,7 @@
 
 ## 1. Executive Summary
 
-Milestone 1 has delivered a modern, functionally verified reproduction of the ProteinSolver core model and application path under the `ProteinDesignRND` organization, with original repository workflows preserved subject to documented external dependencies and limitations.
+The ProteinNet model/application path, seven compatibility adaptations, FastAPI backend, React frontend, and automated verification suite are functionally verified, subject to the documented limitations. Original repository workflows are preserved subject to documented external dependencies and limitations.
 
 Following a thorough forensic audit, the verified factual, architectural, terminology, and reproducibility characteristics are reconciled below:
 - **Upstream Source Frozen:** 100% of the upstream `proteinsolver/` package from scientific baseline commit `69ef0965` is preserved unchanged (0 files modified).
@@ -225,7 +225,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 6. **External Scoring Dependencies:** Upstream evaluation notebooks (`notebooks/16_david_analysis.ipynb`, `notebooks/16_david_analysis_quark.ipynb`) and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models. These workflows are external research dependencies and are NOT required for the verified Milestone 1 mentor demo or application path.
 7. **External Training Dataset Shard Dependency:** Full training datasets (externally hosted training shards) are documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted training shards.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI (`BROWSER_E2E_NOT_AUTOMATED`).
-9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation is remediated, and future runner-image migration exposure is avoided by pinning `ubuntu-24.04`; current CI run `36625875281` succeeded in 2/2 jobs.
+9. **CI Forward-Maintenance:** GitHub Actions workflow (`.github/workflows/ci.yml`) explicitly pins runner `ubuntu-24.04` and upgrades first-party actions to Node 24 native releases (`actions/checkout@v7`, `actions/setup-python@v7`, `actions/setup-node@v7`). The Node 20 runner deprecation is remediated, and future runner-image migration exposure is avoided by pinning `ubuntu-24.04`; current CI run `36627132189` succeeded in 2/2 jobs (earlier run: `36625875281`).
 
 ---
 
