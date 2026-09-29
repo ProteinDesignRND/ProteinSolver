@@ -80,8 +80,9 @@ def get_example_pdb(example_id: str):
     try:
         content = service.get_example_pdb(example_id)
         return {"id": example_id, "pdb_content": content}
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    except (ValueError, FileNotFoundError) as e:
+        status_code = status.HTTP_400_BAD_REQUEST if isinstance(e, ValueError) else status.HTTP_404_NOT_FOUND
+        raise HTTPException(status_code=status_code, detail=str(e))
 
 
 @app.post("/api/validate", response_model=ValidateStructureResponse, tags=["Design"])

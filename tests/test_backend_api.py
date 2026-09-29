@@ -36,6 +36,14 @@ def test_api_example_pdb():
     assert "ATOM" in data["pdb_content"]
     assert data["id"] == "1n5uA03"
 
+    # Verify non-existent ID returns 404
+    res_404 = client.get("/api/examples/nonexistent_chain")
+    assert res_404.status_code == 404
+
+    # Verify path traversal attempt is safely rejected
+    res_traversal = client.get("/api/examples/..%2F..%2FREADME")
+    assert res_traversal.status_code in (400, 404)
+
 def test_api_validate_valid(example_1n5u_pdb):
     res = client.post("/api/validate", json={"pdb_content": example_1n5u_pdb})
     assert res.status_code == 200

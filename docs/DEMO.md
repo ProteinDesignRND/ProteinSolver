@@ -40,4 +40,4 @@ Showcase the complete, runnable ProteinSolver system on a modern development sta
 ### Step 6: Diagnostic Verification (Optional)
 - Switch mode to **Diagnostic Evaluation**.
 - Click **Run Diagnostic Evaluation**.
-- Explain to the mentor that on target 1n5uA03, valid all-masked MAP recovery achieves **41.30% native sequence identity** in 1.77 seconds. Emphasize that this is an integration benchmark on a single structure, not a general benchmark claim.
+- Explain to the mentor that on target 1n5uA03, valid all-masked MAP recovery reproduces **41.30% native sequence identity** in ~1.5 seconds. Emphasize that this is a single-target integration check on a single structure, not a general benchmark claim.

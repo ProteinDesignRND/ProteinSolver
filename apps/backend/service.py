@@ -141,10 +141,15 @@ class ProteinSolverService:
         return examples
 
     def get_example_pdb(self, example_id: str) -> str:
-        filename = f"{example_id}.pdb"
-        pdb_path = Path(settings.inputs_dir) / filename
-        if not pdb_path.exists():
-            raise FileNotFoundError(f"Example file not found: {filename}")
+        base_dir = Path(settings.inputs_dir).resolve()
+        clean_id = Path(example_id).name
+        if clean_id != example_id or not clean_id.replace("_", "").replace("-", "").isalnum():
+            raise ValueError(f"Invalid example identifier: {example_id}")
+        pdb_path = (base_dir / f"{clean_id}.pdb").resolve()
+        if not pdb_path.is_relative_to(base_dir):
+            raise ValueError(f"Invalid example path traversal: {example_id}")
+        if not pdb_path.exists() or not pdb_path.is_file():
+            raise FileNotFoundError(f"Example file not found: {clean_id}.pdb")
         return pdb_path.read_text(encoding="utf-8")
 
     def run_design(
