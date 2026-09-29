@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5`
+**Current Pushed Branch HEAD:** `fcb7f3f35070e6ace56f171c47b74f5e5aee6438`
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -18,7 +18,7 @@
 
 Milestone 1 has delivered a modern, functionally verified reproduction of the ProteinSolver core model and application path under the `ProteinDesignRND` organization, with original repository workflows preserved subject to documented external dependencies and limitations.
 
-Following a thorough forensic audit, all prior factual, architectural, terminology, and reproducibility inconsistencies have been permanently resolved:
+Following a thorough forensic audit, the verified factual, architectural, terminology, and reproducibility characteristics are reconciled below:
 - **Upstream Source Frozen:** 100% of the upstream `proteinsolver/` package from scientific baseline commit `69ef0965` is preserved unchanged (0 files modified).
 - **Exact Model Architecture:** Confirmed `ProteinNet` has a hidden dimensionality of **128** (not 162) and contains exactly **567,060** parameters matching the published checkpoint.
 - **Compatibility Issues:** Exactly **7** compatibility issues were identified, resolved in `compat/`, and regression-tested, including a fail-loud Windows `fcntl` locking stub and a modern BioPython structure extraction engine.
@@ -79,10 +79,10 @@ The upstream project inventory was audited across all 22 meaningful capabilities
 | 10 | Protein Analysis Notebook | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_protein_analysis.ipynb` |
 | 11 | Sudoku Demo Workflow | `CLI/NOTEBOOK_RETAINED` | Retained and executable via `proteinsolver.utils.sudoku` |
 | 12 | Sudoku Analysis Workflow | `CLI/NOTEBOOK_RETAINED` | Research notebook preserved in `notebooks/06_sudoku_analysis.ipynb` |
-| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full GNN training pipelines preserved in `notebooks/04_protein_train*.ipynb`; documented in `docs/KNOWN_LIMITATIONS.md` |
+| 13 | Training Workflows | `CLI/NOTEBOOK_RETAINED` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards |
 | 14 | Model Selection Workflows | `CLI/NOTEBOOK_RETAINED` | Checkpoint validation loss tracking in `notebooks/05_select_best_model.ipynb`; single-target diagnostic wrapped in API |
 | 15 | Model Scoring Utilities | `EXTERNAL_DEPENDENCY` | Upstream scoring wrappers in `proteinsolver/utils/model_scoring/` preserved intact (require external standalone Rosetta / Modeller) |
-| 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | 2.28 MB state-dict (`data/e53-s1952148-d93703104.state`), SHA-256 verified, key mapping in `compat/checkpoint.py` |
+| 16 | Pretrained Protein Checkpoint | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified, deterministic key translation via `compat/checkpoint.py` with 0 missing/unexpected keys and 567,060 parameters |
 | 17 | External Training Datasets | `EXTERNAL_DEPENDENCY` | Multi-gigabyte external datasets documented at `http://deep-protein-gen.data.proteinsolver.org/` |
 | 18 | Docker Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 Conda/GitLab CI Dockerfiles retained for provenance; modern local venv standardized |
 | 19 | Binder Support | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Legacy Binder environment retained for provenance |
@@ -166,7 +166,7 @@ Consequently, a fresh, true remote clean-clone verification was executed from sc
    `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.82s`.
 9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
 
-**Commit-Bound Applicability Statement:** Clean-clone evidence was directly verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s; subsequent changes are documentation-only.
+**Commit-Bound Applicability Statement:** Clean-clone evidence was directly verified on commit `c9a8d412dd788fbcff39da11abb9fe79e9dd34d5` with 32/32 tests passed, npm ci + build passed, and real 1n5uA03 inference reproducing 38/92 (41.30%) in 1.82s; subsequent changes (including `8fa8a22`, `fcb7f3f`, and closure consistency commits) are documentation-only, preserving executable reproducibility evidence applicability.
 
 ---
 
@@ -221,7 +221,7 @@ As documented in `docs/KNOWN_LIMITATIONS.md`:
 4. **Retired Legacy RCSB/PDB Fetching Path:** Upstream network fetching methods relying on defunct URLs are retired; user uploads or local files are used.
 5. **Display-Only Confidence Bands:** Residue confidence bands are uncalibrated model selection probabilities and should not be used as biological thresholds.
 6. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` and wrappers in `proteinsolver/utils/model_scoring/` require external installations of standalone Rosetta binaries and Modeller, and analyze external QUARK de novo structural models.
-7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as legacy.
+7. **External Multi-GB Training Dataset Dependency:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
 8. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 
 ---

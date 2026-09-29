@@ -7,7 +7,7 @@
 
 ## 1. Prerequisites
 
-- **Operating System:** Windows 10/11, Ubuntu 20.04+, or macOS
+- **Operating System:** Windows 10/11 (verified environment: Windows 11); Linux/macOS setup paths provided as unverified references
 - **Python:** 3.11.x (tested on Python 3.11.9)
 - **Node.js:** `>=20.19.0` (tested on Node.js v24.18.0, npm 11.16.0)
 - **Hardware:** CPU or NVIDIA GPU with CUDA support

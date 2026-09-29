@@ -17,6 +17,7 @@ Every component in the upstream project is classified into one of the following 
 4. **CLI/NOTEBOOK_RETAINED:** Research notebook or script preserved in `notebooks/` or `scripts/` for CLI execution and reference.
 5. **EXTERNAL_DEPENDENCY:** Upstream code preserved intact; execution depends on external tools/licenses (e.g., Rosetta, Modeller) or external multi-gigabyte datasets.
 6. **LEGACY_RETAINED_BUT_NOT_EXECUTABLE:** Upstream legacy configuration preserved for provenance; operational workflows are superseded by modern equivalents (e.g. GitLab CI superseded by GitHub Actions, 2019 conda Dockerfiles superseded by native Python 3.11 / uv).
+7. **FUNCTIONALLY_VERIFIED:** Executed and verified against expected outputs, parameter counts, or hash invariants in our automated test suite or runtime.
 
 ---
 
@@ -41,9 +42,9 @@ Every component in the upstream project is classified into one of the following 
 | **Graph Labeling** | `proteinsolver/datasets/graph_labeling.py`| `PRESERVED_UNCHANGED` | Generic graph coloring/labeling problem dataset. |
 | **Legacy Voila Dashboard**| `proteinsolver/dashboard/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | 2019 ipywidgets / Voila interactive dashboard preserved for provenance; modernized by `apps/frontend/` (React 19 + TypeScript + Vite). |
 | **Example PDB Inputs** | `proteinsolver/data/inputs/` | `PRESERVED_UNCHANGED` | 6 real structure fixtures (`1n5uA03.pdb`, `3fndA02.pdb`, `4beuA02.pdb`, etc.). |
-| **Published Checkpoint** | `data/e53-s1952148-d93703104.state` | `COMPATIBILITY_ADAPTED` | 2.28 MB trained weights preserved byte-for-byte; state-dict keys mapped deterministically (`graph_conv_0` $\to$ `graph_conv_1`) via `compat/checkpoint.py`. |
+| **Published Checkpoint** | `data/e53-s1952148-d93703104.state` | `FUNCTIONALLY_VERIFIED` | Checkpoint bytes preserved; SHA-256 verified (`1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`); deterministic key translation applied during loading by `compat/checkpoint.py` with 0 missing keys, 0 unexpected keys, and 567,060 parameters. |
 | **Upstream Tests** | `tests/` | `PRESERVED_UNCHANGED` | Original test suite (tests `ProteinNet`, `sudoku`, `functional`). |
-| **Notebooks (Training)** | `notebooks/04_protein_train*.ipynb` | `EXTERNAL_DEPENDENCY` | Training notebooks preserved intact in `notebooks/`; full training execution requires external 72M CATH Parquet corpus on HPC cluster. |
+| **Notebooks (Training)** | `notebooks/04_protein_train*.ipynb` | `CLI/NOTEBOOK_RETAINED` | Full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards. |
 | **Notebooks (Sudoku)** | `notebooks/04_sudoku_train*.ipynb` | `CLI/NOTEBOOK_RETAINED` | Sudoku training and demonstration notebooks preserved in `notebooks/`. |
 | **Notebooks (Design Demo)**| `notebooks/06_design_proteins.ipynb` | `APPLICATION_WRAPPED` | Notebook design workflow directly realized in `apps/backend/` and `apps/frontend/`. |
 | **CI Configuration** | `.gitlab-ci.yml`, `.ci/` | `LEGACY_RETAINED_BUT_NOT_EXECUTABLE` | Upstream author used GitLab CI; preserved for provenance; modern operational CI is handled by GitHub Actions (`.github/workflows/ci.yml`). |

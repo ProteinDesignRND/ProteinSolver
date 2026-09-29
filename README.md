@@ -1,4 +1,4 @@
-# ProteinSolver — Modern Runnable Reproduction & Full Application Suite
+# ProteinSolver — Modern Runnable Reproduction & Full-Stack Application
 **Upstream Reproduction, Isolated Compatibility Engine, FastAPI Backend, & React Frontend**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -114,7 +114,7 @@ Seven concrete historical incompatibilities between the 2020 codebase and modern
 ### System Requirements
 - **Python**: 3.11.x (tested on 3.11.9)
 - **Node.js**: `>=20.19.0` (tested on Node v24.18.0, npm 11.16.0)
-- **OS**: Windows 10/11 or Ubuntu Linux 22.04+
+- **OS**: Windows 10/11 (verified environment: Windows 11); Linux/macOS setup paths provided as unverified references
 
 ### Step 1: Clone Repository
 ```bash
@@ -226,7 +226,7 @@ pytest tests/ -v
 2. **Display-Only Confidence Bands:** In the Web UI, residue tiles are color-coded based on model selection probability ($\ge 70\%$ green, $40-69\%$ amber, $< 40\%$ rose). These are visualization aids, not calibrated biological probabilities.
 3. **CPU Execution Default:** CSP iterative sequence design is executed on CPU (`device="cpu"`). Under the verified PyTorch 2.6 environment, the legacy CUDA design path triggered cross-device indexing assertions; the compatibility layer therefore standardizes iterative CSP execution to CPU. CPU execution is typically around 1.5–2.1 seconds on the verified CPU environment (exact runtime is run-dependent) and stable without editing upstream code.
 4. **External Scoring Dependencies:** Upstream evaluation scripts in `notebooks/16_david_analysis/` and wrappers in `proteinsolver/utils/model_scoring/` depend on external installations of standalone Rosetta binaries and Modeller, and reference QUARK ab initio prediction models.
-5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and retained for reference; full training workflows are legacy.
+5. **External Multi-GB Training Datasets:** Full training datasets (multi-gigabyte shards) are hosted externally and documented for reference; full training workflows are retained as reference notebooks; full execution depends on the externally hosted multi-gigabyte training shards.
 6. **Browser E2E Testing Not Automated:** Automated test suites cover unit, model, compat, and backend API suites (32 tests across 10 modules) plus frontend TypeScript/Vite production build; browser-based end-to-end UI interaction is not automated in CI.
 
 ---
