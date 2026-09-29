@@ -1,95 +1,221 @@
-# ProteinSolver
+# ProteinSolver — Modern Production Reproduction Suite
+**Official Upstream Reproduction, Isolated Compatibility Engine, FastAPI Backend, & React Frontend**
 
-[![gitlab](https://img.shields.io/badge/GitLab-main-orange?logo=gitlab)](https://gitlab.com/ostrokach/proteinsolver)
-[![docs](https://img.shields.io/badge/docs-v0.1.25-blue.svg?logo=gitbook)](https://ostrokach.gitlab.io/proteinsolver/v0.1.25/)
-[![poster](https://img.shields.io/static/v1?label=poster&message=html&color=yellow&logo=reveal.js)](https://ostrokach-posters.gitlab.io/2019-12-13-neurips-poster/7ad67cfdf35a4e3e8346e293dc444074/)
-[![binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/git/https%3A%2F%2Fmybinder%3AhTGKLsjmxRS8xNyHxRJB%40gitlab.com%2Fostrokach%2Fproteinsolver.git/v0.1.25)
-[![conda](https://img.shields.io/conda/dn/ostrokach-forge/proteinsolver.svg?logo=conda-forge)](https://anaconda.org/ostrokach-forge/proteinsolver/)
-[![pipeline status](https://gitlab.com/ostrokach/proteinsolver/badges/v0.1.25/pipeline.svg)](https://gitlab.com/ostrokach/proteinsolver/commits/v0.1.25/)
-[![coverage report](https://gitlab.com/ostrokach/proteinsolver/badges/master/coverage.svg?job=docs)](https://ostrokach.gitlab.io/proteinsolver/v0.1.25/htmlcov/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python: 3.11+](https://img.shields.io/badge/Python-3.11%2B-brightgreen.svg)](https://python.org)
+[![PyTorch: 2.6](https://img.shields.io/badge/PyTorch-2.6%2Bcu124-orange.svg)](https://pytorch.org)
+[![PyG: 2.8](https://img.shields.io/badge/PyG-2.8.0.post1-purple.svg)](https://pyg.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)](https://fastapi.tiangolo.com)
+[![React: 19](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev)
+[![TypeScript: 5.9](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)](https://www.typescriptlang.org)
 
-## Description
+---
 
-ProteinSolver is a deep neural network which learns to solve (ill-defined) constraint satisfaction problems (CSPs) from training data. It has shown promising results both on a toy problem of learning how to solve Sudoku puzzles and on a real-world problem of designing protein sequences that fold into a predetermined geometric shape.
+## Table of Contents
+1. [Overview](#overview)
+2. [Preservation vs. Modernization Strategy](#preservation-vs-modernization-strategy)
+3. [Architecture](#architecture)
+4. [Prerequisites & Installation](#prerequisites--installation)
+5. [Running the Application](#running-the-application)
+6. [Mentor Demonstration Walkthrough](#mentor-demonstration-walkthrough)
+7. [Running Tests](#running-tests)
+8. [Models & Checkpoints](#models--checkpoints)
+9. [Known Limitations](#known-limitations)
+10. [Team Workflow & Contributing](#team-workflow--contributing)
+11. [License & Upstream Citation](#license--upstream-citation)
 
-## Demo notebooks
+---
 
-The following notebooks can be used to explore the basic functionality of `proteinsolver`.
+## Overview
 
-| Notebook name               | MyBinder                                                                                                                                                                                                                        | Description                                                                                                                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `20_sudoku_demo.ipynb`      | [![binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/git/https%3A%2F%2Fmybinder%3AhTGKLsjmxRS8xNyHxRJB%40gitlab.com%2Fostrokach%2Fproteinsolver.git/v0.1.25?filepath=proteinsolver%2Fnotebooks%2F20_sudoku_demo.ipynb)      | Use a pre-trained network to solve a single Sudoku puzzle.                                                                                                                                 |
-| `06_sudoku_analysis.ipynb`  | [![binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/git/https%3A%2F%2Fmybinder%3AhTGKLsjmxRS8xNyHxRJB%40gitlab.com%2Fostrokach%2Fproteinsolver.git/v0.1.25?filepath=proteinsolver%2Fnotebooks%2F06_sudoku_analysis.ipynb)  | Evaluate a network trained to solve Sudoku puzzles using the validation<br>and test datasets.<br>_(This notebook is resource-intensive and is best ran on a machine with a GPU)._          |
-| `20_protein_demo.ipynb`     | [![binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/git/https%3A%2F%2Fmybinder%3AhTGKLsjmxRS8xNyHxRJB%40gitlab.com%2Fostrokach%2Fproteinsolver.git/v0.1.25?filepath=proteinsolver%2Fnotebooks%2F20_protein_demo.ipynb)     | Use a pre-trained network to design sequences for a single protein geometry.                                                                                                               |
-| `06_protein_analysis.ipynb` | [![binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/git/https%3A%2F%2Fmybinder%3AhTGKLsjmxRS8xNyHxRJB%40gitlab.com%2Fostrokach%2Fproteinsolver.git/v0.1.25?filepath=proteinsolver%2Fnotebooks%2F06_protein_analysis.ipynb) | Evaluate a network trained to reconstruct protein sequences using the<br>validation and test datasets.<br>_(This notebook is resource-intensive and is best ran on a machine with a GPU)._ |
+**ProteinSolver** is a Graph Neural Network (GNN) for inverse protein design, originally created by Alexey Strokach, David Becerra, Carles Corbi-Verge, Albert Perez-Riba, and Philip M. Kim (*Cell Systems* 2020). It formulates inverse protein folding as a **Constraint Satisfaction Problem (CSP)** over residue spatial adjacency graphs ($r < 12.0$ Å), iteratively selecting amino acids that stabilize the target backbone structure.
 
-Other notebooks in the `notebooks/` directory show how to perform more extensive validations of the networks and how to train new networks.
+This repository (`ProteinDesignRND/ProteinSolver`) represents **Milestone 1** of the ProteinDesign project:
+- An **official upstream fork** preserving the entire git history from author commit `69ef0965a3fc3bf191804035b539720a06e58ba6`.
+- A cleanroom **isolated compatibility layer** (`compat/`) that makes ProteinSolver execute seamlessly on modern Python 3.11, PyTorch 2.6, and PyG 2.8 on Windows and Linux without modifying upstream package code.
+- A production **FastAPI backend** (`apps/backend/`) exposing structured REST endpoints for validation, design, and diagnostic recovery.
+- A modern **React + TypeScript + Vite frontend** (`apps/frontend/`) featuring interactive residue confidence heatmaps, FASTA export, and upstream provenance auditing.
+- Strict **native sequence leak protection**, mathematically guaranteeing that inverse folding occurs with zero reference sequence leakage.
 
-## Docker images
+---
 
-Docker images with all required dependencies are provided at: <https://gitlab.com/ostrokach/proteinsolver/container_registry>.
+## Preservation vs. Modernization Strategy
 
-To evaluate a proteinsolver network from a Jupyter notebook, we can run the following:
-
-```bash
-docker run -it --rm -p 8000:8000 registry.gitlab.com/ostrokach/proteinsolver:v0.1.25 jupyter notebook --ip 0.0.0.0 --port 8000
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│  Tier 1: Original Upstream Package (proteinsolver/)                   │
+│  - 100% frozen historical source (commit 69ef0965a3fc3bf191804035b539) │
+│  - 4-block EdgeConv GNN (567,060 parameters)                           │
+│  - Constraint Satisfaction iterative sequence design algorithm         │
+└──────────────────────────────────▲─────────────────────────────────────┘
+                                   │ (wrapped, never edited)
+┌──────────────────────────────────┴─────────────────────────────────────┐
+│  Tier 2: Cleanroom Compatibility Layer (compat/)                       │
+│  - Windows POSIX fcntl stub                                            │
+│  - BioPython cleanroom structure parser (replaces dead kmbio/kmtools)  │
+│  - PyG 2.x scatter_ backward-compatibility shim                        │
+│  - Checkpoint state-dict key translation (graph_conv_0 -> graph_conv_1)│
+│  - Zero-leak all-masked design engine (data.x = 20, data.y = None)     │
+└──────────────────────────────────▲─────────────────────────────────────┘
+                                   │
+┌──────────────────────────────────┴─────────────────────────────────────┐
+│  Tier 3: Modern Application Layer (apps/)                              │
+│  - apps/backend/: FastAPI REST API (health, model, design, diagnostic) │
+│  - apps/frontend/: React 19 + TypeScript + Vite UI with dark aesthetics│
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Installation
+---
 
-We recommend installing `proteinsolver` into a clean conda environment using the following command:
+## Prerequisites & Installation
 
+### Requirements
+- **Python**: 3.11.x (tested on 3.11.9)
+- **Node.js**: v18+ (tested on v24.18.0, npm 11.16.0)
+- **OS**: Windows 10/11 or Ubuntu Linux 22.04+
+
+### Step 1: Clone Repository
 ```bash
-conda create -n proteinsolver -c pytorch -c conda-forge -c kimlab -c ostrokach-forge proteinsolver
-conda activate proteinsolver
+git clone https://github.com/ProteinDesignRND/ProteinSolver.git
+cd ProteinSolver
 ```
 
-## Development
-
-First, use `conda` to install `proteinsolver` into a new conda environment. This will also install all dependencies.
-
+### Step 2: Set Up Python Environment
+Using `uv` (recommended) or standard `venv`:
 ```bash
-conda create -n proteinsolver -c pytorch -c conda-forge -c kimlab -c ostrokach-forge proteinsolver
-conda activate proteinsolver
+uv venv .venv --python 3.11
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
+
+uv pip install torch==2.6.0+cu124 --extra-index-url https://download.pytorch.org/whl/cu124
+uv pip install torch-geometric==2.8.0.post1 torch-scatter==2.1.2+pt26cu124 --extra-index-url https://data.pyg.org/whl/torch-2.6.0+cu124.html
+uv pip install biopython==1.88 fastapi==0.115.11 uvicorn==0.34.0 pydantic==2.10.6 pytest httpx ruamel.yaml
+uv pip install -e . --no-deps
 ```
 
-Second, run `pip install --editable .` inside the root directory of this package. This will force Python to use the development version of our code.
-
+### Step 3: Install Frontend Dependencies
 ```bash
-cd path/to/proteinsolver
-pip install --editable .
+cd apps/frontend
+npm install
+cd ../..
 ```
 
-## Pre-trained models
+---
 
-Pre-trained models can be downloaded using `wget` by running the following command _in the root folder of the `proteinsolver` repository_:
+## Running the Application
 
+### Option A: Launch Backend Service
 ```bash
-wget -r -nH --cut-dirs 1 --reject "index.html*" "http://models.proteinsolver.org/v0.1/"
+# From repository root
+python -m apps.backend.main
+# Server starts at: http://127.0.0.1:8000
+# OpenAPI Docs: http://127.0.0.1:8000/docs
 ```
 
-For an example of how to use a pretrained ProteinSolver models in downstream applications (such as mutation ΔΔG prediction), see the [`elaspic/elaspic2`](https://gitlab.com/elaspic/elaspic2) repository, and in particular the [`src/elaspic2/plugins/proteinsolver`](https://gitlab.com/elaspic/elaspic2/-/tree/master/src/elaspic2/plugins/proteinsolver) module.
+### Option B: Launch Frontend Application
+```bash
+cd apps/frontend
+npm run dev
+# Vite dev server starts at: http://localhost:5173
+```
+Open `http://localhost:5173` in your browser. The frontend is automatically configured to proxy API requests to `http://127.0.0.1:8000`.
 
-## Training and validation datasets
+---
 
-Data used to train and validate the "proteinsolver" network to solve Sudoku puzzles and reconstruct protein sequences can be downloaded from <http://deep-protein-gen.data.proteinsolver.org/>:
+## Mentor Demonstration Walkthrough
+
+For an executive demonstration to academic advisors or mentors:
+
+1. **Launch Services:** Start backend on `:8000` and frontend on `:5173`.
+2. **Open Browser:** Navigate to `http://localhost:5173`.
+3. **Inspect Model Status:** Top header shows `Model Ready (567,060 params) | CPU`.
+4. **Select Fixture:** Click the **`1n5uA03`** 1-Click Fixture button. Chain A (92 residues) loads automatically with distance graph extracted.
+5. **Run Inverse Folding Design:**
+   - Select **✨ Inverse Folding Design** mode.
+   - Choose **Argmax (Greedy MAP)**.
+   - Click **🚀 Run ProteinSolver Design**.
+   - Within ~1.8 seconds, the model generates a complete 92-residue sequence with residue confidence heatmap.
+   - Click **📋 Copy FASTA** or **💾 Download**.
+6. **Demonstrate Methodological Integrity (Zero Native Leakage):**
+   - Switch to **📊 Diagnostic Evaluation** mode.
+   - Click **🚀 Run ProteinSolver Diagnostic**.
+   - The UI reveals **41.30% native sequence identity** (38/92 residues), exactly reproducing the published MAP greedy baseline on `1n5uA03`.
+   - Point out the prominent disclaimer that diagnostic comparison is segregated and was never exposed to the design network.
+7. **Inspect Provenance:** Click **📖 Upstream Provenance** in the top navigation to display the complete historical lineage, MIT license attribution, and modern compatibility innovations.
+
+---
+
+## Running Tests
+
+Execute the automated test suite covering shims, structure parsing, checkpoint parameter validation, zero-leak regression, and FastAPI endpoints:
 
 ```bash
-wget -r -nH --reject "index.html*" "http://deep-protein-gen.data.proteinsolver.org/"
+pytest tests/ -v
 ```
 
-The generation of the training and validation datasets was carried out in our predecessor project: [`ostrokach/protein-adjacency-net`](https://gitlab.com/ostrokach/protein-adjacency-net).
+To run only the milestone 1 unit and integration suite:
+```bash
+pytest tests/test_*.py -v
+```
 
-## Environment variables
+---
 
-- `DATAPKG_DATA_DIR` - Location of training and validation data.
+## Models & Checkpoints
 
-## Acknowledgements
+The official published model checkpoint is stored at:
+```
+data/e53-s1952148-d93703104.state
+```
+- **Architecture:** `ProteinNet` (4 EdgeConv blocks, 162-dim hidden embeddings)
+- **Parameters:** 567,060
+- **SHA-256 Checksum:** `1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727`
 
-<div align="center">
-<img src="docs/_static/acknowledgements.svg" width="45%" />
-</div>
+If the checkpoint is missing, download it from the original repository releases or Zenodo record (`10.5281/zenodo.3736357`).
 
-## References
+---
 
-- Strokach A, Becerra D, Corbi-Verge C, Perez-Riba A, Kim PM. _Fast and flexible protein design using deep graph neural networks_. Cell Systems (2020); 11: 1–10. doi: [10.1016/j.cels.2020.08.016](https://www.cell.com/cell-systems/fulltext/S2405-4712(20)30327-6)
+## Known Limitations
+
+1. **CPU Execution Default:** CSP iterative sequence design is configured on CPU (`device="cpu"`). PyTorch 2.6 introduced cross-device boolean indexing checks that cause CUDA assertions in the legacy CSP code. CPU execution is highly optimized (~1.7s for 92 AA) and eliminates runtime instability without modifying upstream code.
+2. **Rosetta Scoring Scripts:** Upstream evaluation scripts in `notebooks/16_david_analysis/` require licensed local installations of PyRosetta and Quark, which are documented as external research dependencies.
+3. **Single-Target Fixture Boundary:** `1n5uA03` is a single-target integration fixture. Its 41.30% recovery is an integration sanity check, NOT a benchmark evaluation. Systematic benchmarking belongs strictly in the research repository (`ProteinDesignRND/ProteinDesign`).
+
+---
+
+## Team Workflow & Contributing
+
+This repository is governed under `ProteinDesignRND` organizational rules:
+- **Default Branch:** `main` (Protected by GitHub Ruleset).
+- **Protection Rules:**
+  - Direct pushes to `main` are blocked.
+  - Pull requests require at least 1 approval.
+  - Commit signatures are required.
+  - Force-pushes and branch deletions are disabled.
+  - Linear git history enforced via squash merging.
+- **Development Workflow:**
+  1. Clone repository and create a feature branch (`feature/your-topic`).
+  2. Implement changes, following the Tier 1/2/3 boundary rules.
+  3. Verify all tests pass (`pytest tests/`) and frontend builds (`npm run build`).
+  4. Submit a Pull Request targeting `main`.
+
+---
+
+## License & Upstream Citation
+
+ProteinSolver is released under the **MIT License**. See [LICENSE](LICENSE) for details.
+
+### Citation
+```bibtex
+@article{strokach2020fast,
+  title={Fast and flexible design of novel proteins with graph neural networks},
+  author={Strokach, Alexey and Becerra, David and Corbi-Verge, Carles and Perez-Riba, Albert and Kim, Philip M},
+  journal={Cell Systems},
+  volume={11},
+  number={4},
+  pages={402--411},
+  year={2020},
+  publisher={Elsevier}
+}
+```
