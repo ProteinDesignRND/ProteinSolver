@@ -6,7 +6,7 @@
 ---
 
 ## 1. Objective of Demonstration
-Showcase the complete, runnable ProteinSolver system on a modern development stack:
+Showcase the modern, functionally verified ProteinSolver application suite on a modern development stack:
 1. Validating input PDB structure.
 2. Generating a novel protein sequence using all-masked graph neural network inverse folding.
 3. Inspecting per-residue confidence scores.

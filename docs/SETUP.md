@@ -8,8 +8,8 @@
 ## 1. Prerequisites
 
 - **Operating System:** Windows 10/11, Ubuntu 20.04+, or macOS
-- **Python:** 3.10 or 3.11 (tested on Python 3.11.9)
-- **Node.js:** v18+ (tested on Node.js v24.18.0)
+- **Python:** 3.11.x (tested on Python 3.11.9)
+- **Node.js:** `>=20.19.0` (tested on Node.js v24.18.0, npm 11.16.0)
 - **Hardware:** CPU or NVIDIA GPU with CUDA support
 
 ---
@@ -20,9 +20,23 @@
 ```bash
 git clone https://github.com/ProteinDesignRND/ProteinSolver.git
 cd ProteinSolver
+git checkout feature/milestone-1-full-implementation
 ```
 
 ### Step 2.2: Setup Python Virtual Environment
+Using `uv` (recommended) or standard Python `venv`:
+```bash
+uv venv .venv --python 3.11.9
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
+
+# Install dependencies from pinned requirements:
+uv pip install -r requirements.txt
+uv pip install -e . --no-deps
+```
+Or with standard `pip`:
 ```bash
 python -m venv .venv
 # Windows:
@@ -31,8 +45,8 @@ python -m venv .venv
 source .venv/bin/activate
 
 pip install --upgrade pip
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
-pip install torch_geometric torch_scatter biopython fastapi uvicorn pydantic pytest
+pip install -r requirements.txt
+pip install -e . --no-deps
 ```
 
 ### Step 2.3: Verify Checkpoint

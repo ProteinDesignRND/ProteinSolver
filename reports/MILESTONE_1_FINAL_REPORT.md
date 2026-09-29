@@ -7,7 +7,7 @@
 **Implementation Repository:** `https://github.com/ProteinDesignRND/ProteinSolver` (`ProteinDesignRND/ProteinSolver`)
 **Research Repository (Firewalled):** `https://github.com/ProteinDesignRND/ProteinDesign` (`ProteinDesignRND/ProteinDesign`)
 **Feature Branch:** `feature/milestone-1-full-implementation`
-**Current Pushed Branch HEAD:** `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`
+**Current Pushed Branch HEAD:** `2c559163acd5372513ba397fd400aadd0822bcc0`
 **Target Branch main HEAD:** `69ef0965a3fc3bf191804035b539720a06e58ba6`
 **Pull Request:** [PR #1 (Open)](https://github.com/ProteinDesignRND/ProteinSolver/pull/1)
 
@@ -16,7 +16,7 @@
 
 ## 1. Executive Summary
 
-Milestone 1 has delivered a complete, runnable, and independently verified reproduction of Alexey Strokach's *Cell Systems* 2020 ProteinSolver graph neural network system under the `ProteinDesignRND` organization.
+Milestone 1 has delivered a modern, functionally verified reproduction of the ProteinSolver core model and application path under the `ProteinDesignRND` organization, with original repository workflows preserved subject to documented external dependencies and limitations.
 
 Following a thorough forensic audit, all prior factual, architectural, terminology, and reproducibility inconsistencies have been permanently resolved:
 - **Upstream Source Frozen:** 100% of the upstream `proteinsolver/` package from scientific baseline commit `69ef0965` is preserved unchanged (0 files modified).
@@ -166,7 +166,7 @@ Consequently, a fresh, true remote clean-clone verification was executed from sc
    `INFERENCE_SUCCESS: Length=92, Matches=38/92, Recovery=41.30%, Runtime=1.75s`.
 9. **Scratch Teardown:** Completely removed the temporary clone and its virtual environment.
 
-**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12`. Subsequent release-closure changes are strictly documentation and setup calibrations (`docs/SETUP.md` `npm install` -> `npm ci`, `AGENT_RULES_AND_LESSONS.md` terminology, and report synchronization) with zero changes to executable, runtime, package, model, or CI files.
+**Commit-Bound Applicability Statement:** Current-head clean-clone reproducibility is empirically verified on commit `4b0e86f90e5dbfeb58ad7bf38c5f9e0fd117bf12` and confirmed across subsequent release-gate reconciliation commit `2c559163acd5372513ba397fd400aadd0822bcc0`, with zero changes to executable, runtime, package, model, or CI files.
 
 ---
 
