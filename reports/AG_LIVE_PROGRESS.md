@@ -16,11 +16,11 @@
 | Stage | Status | Verification & Artifact Details |
 | :--- | :---: | :--- |
 | **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and clean working tree. |
-| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, live GitHub CI run 36628088454 green (2/2 jobs succeeded; earlier run: 36627132189). Research repo and upstream reference clone verified clean. |
+| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN; CI verified via GitHub Actions checks (historical verification snapshots: runs 36628088454 and 36627132189 green in 2/2 jobs). Research repo and upstream reference clone verified clean. |
 | **STAGE_2_RESIDUAL_DOCUMENTATION_AUDIT** | **COMPLETE** | Audited active documents for commit-binding clarity, training shard phrasing, self-referential commit claims, and limitation references. |
 | **STAGE_3_DURABLE_RULE_INTEGRITY** | **COMPLETE** | Preserved canonical Lessons 21–24 in `AGENT_RULES_AND_LESSONS.md`; added Lesson 25 defining epistemic classification for research-scoped benchmark protocols (`OUT_OF_SCOPE_RESEARCH`). |
 | **STAGE_4_TAXONOMY_RECONCILIATION** | **COMPLETE** | Reconciled disposition categories and verification statuses into orthogonal dimensions across `docs/ORIGINAL_PROJECT_INVENTORY.md`, `docs/ORIGINAL_PROJECT_PARITY.md`, and `reports/MILESTONE_1_FINAL_REPORT.md`. |
-| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, synchronized current CI run reference to 36628088454, and confirmed absence of self-referential commit hashes in committed documents. |
+| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, decoupled live CI run state from persistent docs (referencing historical snapshots), and confirmed absence of self-referential commit hashes in committed documents. |
 | **STAGE_6_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |
 | **STAGE_7_FINAL_GOVERNANCE_CHECK** | **COMPLETE** | Verified PR #1 remains OPEN targeting `main` pending human review and approval; state `PENDING_HUMAN_MERGE`. |
 
