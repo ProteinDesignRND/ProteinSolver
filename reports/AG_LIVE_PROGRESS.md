@@ -17,7 +17,7 @@
 | :--- | :---: | :--- |
 | **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and clean working tree. |
 | **STAGE_1_LIVE_STATE** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, both CI checks green; research repo and upstream reference clone verified clean. |
-| **STAGE_2_CROSS_AI_FINDING_LEDGER** | **COMPLETE** | Reconciled all 23 implementation finding classes (CONFIRMED_SATISFIED) and 14 scientific finding classes (OUT_OF_SCOPE_RESEARCH). |
+| **STAGE_2_CROSS_AI_FINDING_LEDGER** | **COMPLETE** | Reconciled all 23 cross-AI review classes (13 core technical/security findings + 10 governance/documentation hygiene checks, all CONFIRMED_SATISFIED) and 14 scientific benchmark protocol findings (OUT_OF_SCOPE_RESEARCH). |
 | **STAGE_3_REPOSITORY_FORENSICS** | **COMPLETE** | Verified 100% upstream retention (581 files, 0 deleted), zero modifications to protected directories, exact model invariants (ProteinNet, hidden dim 128, 567,060 params, matching SHA-256), design-path input invariant, single-target 41.30% result boundary, 7 REST endpoints / 8 API tests, and frontend build. |
 | **STAGE_4_REPAIR_BATCH** | **COMPLETE** | Reconciled stage naming schema, clarified inventory (24 files) vs parity matrix (22 capabilities) abstraction levels, and ensured zero transient CI IDs in persistent docs. |
 | **STAGE_5_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |

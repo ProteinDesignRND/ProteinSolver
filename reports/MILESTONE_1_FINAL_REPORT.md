@@ -59,7 +59,7 @@ git diff 69ef0965..HEAD --name-status
 - Root repository baseline files:
   1. `.gitignore`: **Class B (Legitimate downstream repository metadata)**. Added `!apps/frontend/index.html` and modern IDE ignores.
   2. `README.md`: **Class B (Legitimate downstream repository metadata)**. Updated to provide comprehensive modern setup, architecture, and provenance instructions.
-  3. `setup.py`: **Class C (Legitimate compatibility change)**. Updated file reader with `encoding="utf-8", errors="replace"` to prevent Windows cp1252 charmap decoding crashes on README UTF-8 characters.
+  3. `setup.py`: **Class C (Packaging / Metadata Robustness)**. Updated file reader with `encoding="utf-8", errors="replace"` to prevent Windows cp1252 charmap decoding crashes during local pip installation on README UTF-8 characters. This is a packaging/build robustness enhancement, distinct from the seven runtime compatibility adaptations isolated in `compat/`.
 
 ---
 
