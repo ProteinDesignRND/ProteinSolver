@@ -27,7 +27,7 @@ Following a thorough forensic audit, the verified factual, architectural, termin
 - **Calibrated Result Language:** Single-target recovery on `1n5uA03` is strictly characterized as a *"previously validated single-target all-masked integration result (41.30% native sequence identity, 38/92 residues)"*, avoiding generalized benchmark or published MAP claims.
 - **Genuine Clean-Clone Reproducibility:** Verified in a brand-new, isolated temporary directory with a clean Python 3.11 virtual environment completely free of cross-repository dependencies (32/32 tests passed, npm ci + build passed, real integration inference passed).
 - **Scientific Protocol Scope:** All 14 scientific benchmark protocol findings (raw logit scale, percentile rank normalization, target-level statistics, candidate budget, common candidate universe, folding failure taxonomy, fixed-correspondence scTM, etc.) are classified as `OUT_OF_SCOPE_RESEARCH`; they belong exclusively to the separate research repository (`ProteinDesignRND/ProteinDesign`) and were not experimentally executed as part of the ProteinSolver Milestone 1 implementation.
-- **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed. Zero benchmark candidates, zero folding evaluations, and zero test-set evaluations were performed.
+- **Scientific Firewall:** The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed. Zero research-benchmark candidates were generated, zero benchmark evaluations were performed, and zero folding evaluations were performed.
 - **Human Merge Gate:** Pull Request #1 is OPEN targeting `main` pending human review and approval.
 
 ---
@@ -207,9 +207,9 @@ The automated test suite contains **32 tests** across 10 test modules:
 ## 12. Scientific Firewall Confirmation
 
 The `ProteinDesignRND/ProteinDesign` research repository working tree remains clean and no research experiments were performed:
-- 0 candidate sequences generated for scientific experiments.
-- 0 benchmark runs (no E1, no TS50, no ProteinMPNN evaluations).
-- 0 ESMFold or AlphaFold2 folding evaluations.
+- Zero research-benchmark candidates were generated.
+- Zero benchmark evaluations were performed (no E1, no TS50, no ProteinMPNN evaluations).
+- Zero folding evaluations were performed (no ESMFold or AlphaFold2 evaluations).
 - Historical reference clone at `external/proteinsolver-original` remains frozen at commit `69ef0965`.
 
 ---
