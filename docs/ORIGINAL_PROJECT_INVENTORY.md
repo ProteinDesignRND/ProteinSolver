@@ -26,7 +26,9 @@ The forensic classification separates two orthogonal dimensions: **Disposition C
 
 ---
 
-## 2. Upstream Module Inventory
+## 2. Upstream Module Inventory (File / Subsystem Level — 24 Items)
+
+> **Note on Abstraction Level:** This inventory catalogs 24 concrete file, module, and directory-level paths in the upstream repository. By contrast, [docs/ORIGINAL_PROJECT_PARITY.md](file:///D:/Projects/ProteinSolver/docs/ORIGINAL_PROJECT_PARITY.md) evaluates 22 functional capabilities and workflows at a capability level (e.g. grouping individual neural network operator modules).
 
 | Module / Component | Upstream Path | Disposition | Verification Status | Modern Status & Adaptation |
 | :--- | :--- | :---: | :---: | :--- |

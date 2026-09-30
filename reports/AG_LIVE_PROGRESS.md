@@ -16,13 +16,13 @@
 | Stage | Status | Verification & Artifact Details |
 | :--- | :---: | :--- |
 | **STAGE_0_PREFLIGHT** | **COMPLETE** | Verified exact repository directory (`D:\Projects\ProteinSolver`), branch `feature/milestone-1-full-implementation`, upstream push URL `no_push`, and clean working tree. |
-| **STAGE_1_LIVE_STATE_AUDIT** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN; CI verified via GitHub Actions checks (historical verification snapshots: runs 36628088454 and 36627132189 green in 2/2 jobs). Research repo and upstream reference clone verified clean. |
-| **STAGE_2_RESIDUAL_DOCUMENTATION_AUDIT** | **COMPLETE** | Audited active documents for commit-binding clarity, training shard phrasing, self-referential commit claims, and limitation references. |
-| **STAGE_3_DURABLE_RULE_INTEGRITY** | **COMPLETE** | Preserved canonical Lessons 21–24 in `AGENT_RULES_AND_LESSONS.md`; added Lesson 25 defining epistemic classification for research-scoped benchmark protocols (`OUT_OF_SCOPE_RESEARCH`). |
-| **STAGE_4_TAXONOMY_RECONCILIATION** | **COMPLETE** | Reconciled disposition categories and verification statuses into orthogonal dimensions across `docs/ORIGINAL_PROJECT_INVENTORY.md`, `docs/ORIGINAL_PROJECT_PARITY.md`, and `reports/MILESTONE_1_FINAL_REPORT.md`. |
-| **STAGE_5_CONSOLIDATED_REPAIR** | **COMPLETE** | Standardized taxonomy tables, decoupled live CI run state from persistent docs (referencing historical snapshots), and confirmed absence of self-referential commit hashes in committed documents. |
-| **STAGE_6_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |
-| **STAGE_7_FINAL_GOVERNANCE_CHECK** | **COMPLETE** | Verified PR #1 remains OPEN targeting `main` pending human review and approval; state `PENDING_HUMAN_MERGE`. |
+| **STAGE_1_LIVE_STATE** | **COMPLETE** | Confirmed branch synchronized with origin, PR #1 OPEN, both CI checks green; research repo and upstream reference clone verified clean. |
+| **STAGE_2_CROSS_AI_FINDING_LEDGER** | **COMPLETE** | Reconciled all 23 implementation finding classes (CONFIRMED_SATISFIED) and 14 scientific finding classes (OUT_OF_SCOPE_RESEARCH). |
+| **STAGE_3_REPOSITORY_FORENSICS** | **COMPLETE** | Verified 100% upstream retention (581 files, 0 deleted), zero modifications to protected directories, exact model invariants (ProteinNet, hidden dim 128, 567,060 params, matching SHA-256), design-path input invariant, single-target 41.30% result boundary, 7 REST endpoints / 8 API tests, and frontend build. |
+| **STAGE_4_REPAIR_BATCH** | **COMPLETE** | Reconciled stage naming schema, clarified inventory (24 files) vs parity matrix (22 capabilities) abstraction levels, and ensured zero transient CI IDs in persistent docs. |
+| **STAGE_5_VALIDATION** | **COMPLETE** | Validated commit-bound reproducibility applicability (`VERIFICATION_BASIS_COMMIT: c9a8d41...`), clean git diff formatting, and zero executable code changes. |
+| **STAGE_6_GOVERNANCE_RECHECK** | **COMPLETE** | Confirmed PR #1 remains OPEN targeting `main`, `main-protection` ruleset active, review required, pending human review and approval (`PENDING_HUMAN_MERGE`). |
+| **STAGE_7_FINAL_HUMAN_REVIEW_PACKAGE** | **COMPLETE** | Final human review decision brief prepared; governance decision reserved exclusively for human maintainer. |
 
 ---
 

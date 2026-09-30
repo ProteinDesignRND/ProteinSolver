@@ -23,7 +23,9 @@ The parity audit separates two orthogonal dimensions: **Disposition Category** (
 
 ---
 
-## 2. Complete Forensic Component Disposition
+## 2. Complete Forensic Component Disposition (Capability / Workflow Level — 22 Items)
+
+> **Note on Abstraction Level:** This parity matrix evaluates 22 functional capabilities, user workflows, and experimental systems. By contrast, [docs/ORIGINAL_PROJECT_INVENTORY.md](file:///D:/Projects/ProteinSolver/docs/ORIGINAL_PROJECT_INVENTORY.md) catalogs 24 concrete file, module, and directory-level paths in the repository.
 
 | # | Upstream Component / Artifact | Original Path | Disposition | Verification Status | Forensic Analysis & Modern Disposition |
 | :- | :--- | :--- | :---: | :---: | :--- |

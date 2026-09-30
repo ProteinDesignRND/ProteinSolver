@@ -65,7 +65,7 @@ git diff 69ef0965..HEAD --name-status
 
 ## 4. Original Upstream Project Parity Matrix
 
-The upstream project inventory was audited across all 22 meaningful capabilities and documented in `docs/ORIGINAL_PROJECT_PARITY.md`:
+The upstream project inventory was audited across all 22 meaningful capabilities and documented in `docs/ORIGINAL_PROJECT_PARITY.md` (with 24 file/subsystem paths cataloged in `docs/ORIGINAL_PROJECT_INVENTORY.md`):
 
 | # | Upstream Component | Upstream Path | Disposition | Verification Status | Current Modern Status & Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
