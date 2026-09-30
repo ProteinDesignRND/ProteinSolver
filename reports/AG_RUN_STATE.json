@@ -1,0 +1,38 @@
+{
+  "state": "MILESTONE_1_FUNCTIONALLY_COMPLETE_WITH_LIMITATIONS",
+  "governance_state": "PENDING_HUMAN_MERGE",
+  "current_stage": "STAGE_8_FINAL_HUMAN_REVIEW_PACKAGE",
+  "progress_percentage": 100,
+  "milestone": "Milestone 1 — Upstream Reproduction, Compatibility Layer & Application Suite",
+  "active_work": "Final documentation / governance integrity repair complete; awaiting human code review and squash-merge of PR #1",
+  "next_action": "Human review and approve PR #1 on GitHub, then squash-merge into main",
+  "blockers": [],
+  "tests_passed": 32,
+  "tests_failed": 0,
+  "clean_clone_passed": true,
+  "frontend_build_passed": true,
+  "browser_e2e_status": "BROWSER_E2E_NOT_AUTOMATED",
+  "pull_request_url": "https://github.com/ProteinDesignRND/ProteinSolver/pull/1",
+  "pull_request_state": "OPEN",
+  "feature_branch": "feature/milestone-1-full-implementation",
+  "verification_basis_commit": "c9a8d412dd788fbcff39da11abb9fe79e9dd34d5",
+  "main_sha": "69ef0965a3fc3bf191804035b539720a06e58ba6",
+  "ci_status": "VERIFIED_CLEAN_ON_PR_CHECKS (evidence snapshot: 2/2 jobs succeeded; live run reported in closure record)",
+  "scientific_findings_classification": "OUT_OF_SCOPE_RESEARCH",
+  "model_facts": {
+    "model_name": "ProteinSolver",
+    "model_class": "ProteinNet",
+    "hidden_size": 128,
+    "parameter_count": 567060,
+    "checkpoint_sha256": "1E8272F05EC19041394568C949BBDBF012EE72C1595BE7157C4BB0324D0B5727"
+  },
+  "single_target_result": {
+    "target": "1n5uA03",
+    "length": 92,
+    "matches": 38,
+    "recovery_percentage": 41.3,
+    "classification": "previously validated single-target all-masked integration result"
+  },
+  "compatibility_issues_count": 7,
+  "research_firewall_intact": true
+}

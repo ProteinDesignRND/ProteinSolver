@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-tests:
+    name: Backend & Model Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch==2.6.0+cpu --index-url https://download.pytorch.org/whl/cpu
+          pip install torch-scatter==2.1.2+pt26cpu -f https://data.pyg.org/whl/torch-2.6.0+cpu.html
+          pip install $(grep -v -E '^(#|--|-f|torch==|torch-scatter==)' requirements.txt | tr -d '\r')
+          pip install -e . --no-deps
+
+      - name: Run pytest test suite
+        run: |
+          pytest tests/ -v
+
+  frontend-build:
+    name: Frontend Build & Typecheck
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+
+      - name: Install dependencies and build
+        run: |
+          cd apps/frontend
+          npm ci
+          npm run build

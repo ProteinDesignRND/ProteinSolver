@@ -92,3 +92,6 @@ node_modules
 *.html
 manuscript
 tmp
+
+# Allow frontend entrypoint HTML
+!apps/frontend/index.html
